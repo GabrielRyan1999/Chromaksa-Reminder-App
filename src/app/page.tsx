@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, CheckCircle2, FileText } from "lucide-react";
 
 export default function LandingPage() {
   return (
