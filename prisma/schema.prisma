@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  passwordHash  String?
+  name          String?
+  timezone      String     @default("UTC")
+  createdAt     DateTime   @default(now())
+  
+  notes         Note[]
+  reminders     Reminder[]
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  userId    String
+  date      String   // Format: YYYY-MM-DD
+  content   String?    // Rich text JSON representation (stringified for SQLite)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, date]) // A user should have one note per date
+}
+
+model Reminder {
+  id              String    @id @default(uuid())
+  userId          String
+  title           String
+  description     String?
+  dueAt           DateTime
+  notifyEmail     Boolean   @default(true)
+  notifyDesktop   Boolean   @default(false)
+  status          String    @default("pending") // "pending", "done"
+  recurrenceRule  String?
+  category        String?   // Added for Aline's UI
+  subtasks        Subtask[] // Added for Aline's UI
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Subtask {
+  id         String   @id @default(uuid())
+  reminderId String
+  reminder   Reminder @relation(fields: [reminderId], references: [id], onDelete: Cascade)
+  title      String
+  isDone     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

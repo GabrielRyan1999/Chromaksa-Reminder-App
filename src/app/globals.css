@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --background: #FAFAF6;
+  --foreground: #1E2A44;
+  --color-amber: #F2A93B;
+  --color-sage: #6B8F71;
+  --color-graphite: #8A8F98;
+}
+
+.dark {
+  --background: #111827;
+  --foreground: #FAFAF6;
+  --color-amber: #F2A93B;
+  --color-sage: #81A186;
+  --color-graphite: #9BA0A8;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-amber: var(--color-amber);
+  --color-brand-sage: var(--color-sage);
+  --color-brand-graphite: var(--color-graphite);
+  
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+p {
+  max-width: 80ch;
+}
+
+/* Custom Typography Theme */
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--color-graphite);
+  --tw-prose-links: var(--color-amber);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--color-graphite);
+  --tw-prose-bullets: var(--color-graphite);
+  --tw-prose-hr: var(--color-graphite);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--color-amber);
+  --tw-prose-captions: var(--color-graphite);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-th-borders: var(--color-graphite);
+  --tw-prose-td-borders: var(--color-graphite);
+}
