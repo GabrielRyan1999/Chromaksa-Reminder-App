@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Calendar, CheckCircle2, FileText } from "lucide-react";
+import HeroCarousel from "@/components/HeroCarousel";
 
 export default function LandingPage() {
   return (
@@ -37,21 +38,8 @@ export default function LandingPage() {
           </Link>
         </div>
         
-        {/* Mockup / Hero Image Placeholder */}
-        <div className="mt-20 relative rounded-xl border border-[var(--color-brand-graphite)] border-opacity-20 shadow-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-black/5 dark:bg-white/5">
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-background)] via-transparent to-transparent opacity-50 pointer-events-none z-10" />
-          {/* Fallback text if image is missing */}
-          <div className="absolute text-[var(--color-brand-graphite)] opacity-50 flex flex-col items-center z-0">
-            <Calendar className="w-16 h-16 mb-4" />
-            <p className="font-serif text-xl">Drop screenshot to public/preview.png</p>
-          </div>
-          {/* Actual Preview Image */}
-          <img 
-            src="/preview.png" 
-            alt="Reminder App Dashboard Preview" 
-            className="w-full h-full object-cover object-top relative z-0"
-          />
-        </div>
+        
+        <HeroCarousel />
       </section>
 
       {/* Features Grid */}
