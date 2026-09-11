@@ -1,8 +1,17 @@
 import Link from "next/link";
 import { ArrowRight, Calendar, CheckCircle2, FileText } from "lucide-react";
 import HeroCarousel from "@/components/HeroCarousel";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const session = await getServerSession(authOptions);
+  
+  if (session?.user) {
+    redirect("/app");
+  }
+
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] font-sans selection:bg-[var(--color-brand-amber)] selection:text-white">
       
