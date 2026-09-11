@@ -67,7 +67,8 @@ function AuthForm() {
       <div className="w-full max-w-sm">
         
         {/* Logo / Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 flex flex-col items-center">
+          <img src="/logo.png" alt="Reminder App Logo" className="w-12 h-12 object-contain mb-3" />
           <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight">
             Reminder App
           </h1>
