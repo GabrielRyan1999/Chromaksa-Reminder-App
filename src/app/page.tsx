@@ -57,9 +57,9 @@ export default function LandingPage() {
       {/* Features Grid */}
       <section className="py-24 px-6 bg-black/5">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Everything you need. Nothing you don't.</h2>
-            <p className="text-[var(--color-brand-graphite)] text-lg">A focused toolkit designed for modern professionals.</p>
+          <div className="flex flex-col items-center text-center mb-16">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-center">Everything you need. Nothing you don't.</h2>
+            <p className="text-[var(--color-brand-graphite)] text-lg text-center">A focused toolkit designed for modern professionals.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
