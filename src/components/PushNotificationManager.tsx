@@ -45,12 +45,30 @@ export function PushNotificationManager() {
 
   async function subscribe() {
     setLoading(true);
+    setMessage('');
     try {
+      if (!('Notification' in window)) {
+        throw new Error('Browser does not support notifications');
+      }
+
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        throw new Error('Notification permission denied');
+      }
+
       const registration = await navigator.serviceWorker.ready;
+      if (!registration) {
+        throw new Error('Service worker not registered');
+      }
       
+      const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+      if (!vapidKey) {
+        throw new Error('Missing VAPID public key. Check your environment variables.');
+      }
+
       const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY as string),
+        applicationServerKey: urlBase64ToUint8Array(vapidKey),
       });
 
       setSubscription(sub);
@@ -69,9 +87,9 @@ export function PushNotificationManager() {
       } else {
         setMessage('Failed to save subscription on the server.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Subscription error:', error);
-      setMessage('You must grant permission to receive notifications.');
+      setMessage(`Error: ${error.message || 'Failed to subscribe'}`);
     }
     setLoading(false);
   }
