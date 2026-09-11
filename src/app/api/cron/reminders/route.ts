@@ -11,16 +11,19 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-webpush.setVapidDetails(
-  'mailto:' + (process.env.GMAIL_USER || 'admin@example.com'),
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY as string,
-  process.env.VAPID_PRIVATE_KEY as string
-);
-
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Set VAPID details inside the handler to prevent build-time errors if env vars are missing
+  if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+    webpush.setVapidDetails(
+      'mailto:' + (process.env.GMAIL_USER || 'admin@example.com'),
+      process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY as string,
+      process.env.VAPID_PRIVATE_KEY as string
+    );
   }
 
   try {
