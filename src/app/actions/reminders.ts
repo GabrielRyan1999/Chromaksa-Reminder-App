@@ -57,6 +57,8 @@ export async function createReminder(title: string, dueAt: Date, recurrenceRule:
       title,
       dueAt,
       recurrenceRule,
+      notifyDesktop: true,
+      notifyEmail: true,
     }
   });
 
@@ -112,7 +114,9 @@ export async function toggleReminderStatus(id: string, status: string) {
         description: reminder.description,
         dueAt: nextDueAt,
         recurrenceRule: reminder.recurrenceRule,
-        status: "pending"
+        status: "pending",
+        notifyDesktop: reminder.notifyDesktop,
+        notifyEmail: reminder.notifyEmail,
       }
     });
   }
