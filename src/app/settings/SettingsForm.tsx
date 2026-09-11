@@ -61,7 +61,7 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
           type="text" 
           value={name} 
           onChange={e => setName(e.target.value)}
-          className="w-full bg-white border border-[var(--color-brand-graphite)] border-opacity-30 rounded px-3 py-2 text-sm text-[var(--color-foreground)] focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none transition-shadow"
+          className="w-full bg-black/5 dark:bg-white/5 border border-transparent rounded px-3 py-2 text-sm text-[var(--color-foreground)] focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none transition-shadow"
         />
       </div>
 
@@ -72,7 +72,7 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
         <select 
           value={timezone}
           onChange={e => setTimezone(e.target.value)}
-          className="w-full bg-white border border-[var(--color-brand-graphite)] border-opacity-30 rounded px-3 py-2 text-sm text-[var(--color-foreground)] focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none transition-shadow"
+          className="w-full bg-black/5 dark:bg-white/5 border border-transparent rounded px-3 py-2 text-sm text-[var(--color-foreground)] focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none transition-shadow [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#1a1a1a] dark:[&>option]:text-white"
         >
           {timezones.map(tz => (
             <option key={tz} value={tz}>{tz}</option>
