@@ -5,6 +5,7 @@ import { getUserSettings } from "../actions/settings";
 import SettingsForm from "./SettingsForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { PushNotificationManager } from "@/components/PushNotificationManager";
 
 export default async function SettingsPage() {
   const session = await getServerSession(authOptions);
@@ -29,6 +30,10 @@ export default async function SettingsPage() {
       <main className="max-w-xl mx-auto px-8 py-12 w-full">
         <h1 className="font-serif text-3xl font-bold mb-8">Settings</h1>
         {settings && <SettingsForm initialData={settings} />}
+        
+        <div className="mt-8">
+          <PushNotificationManager />
+        </div>
       </main>
     </div>
   );

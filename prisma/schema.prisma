@@ -15,8 +15,9 @@ model User {
   timezone      String     @default("UTC")
   createdAt     DateTime   @default(now())
   
-  notes         Note[]
-  reminders     Reminder[]
+  notes              Note[]
+  reminders          Reminder[]
+  pushSubscriptions  PushSubscription[]
 }
 
 model Note {
@@ -68,5 +69,17 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@unique([email, token])
+}
+
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
