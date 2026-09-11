@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 
 export default function UserMenu({ user }: { user: any }) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -61,13 +61,13 @@ export default function UserMenu({ user }: { user: any }) {
 
           <button
             onClick={() => {
-              setTheme(theme === 'dark' ? 'light' : 'dark');
+              setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
               setIsOpen(false);
             }}
             className="w-full text-left px-4 py-2 text-sm text-[var(--color-foreground)] hover:bg-black/5 dark:hover:bg-white/5 flex items-center transition-colors"
           >
-            {mounted && theme === 'dark' ? <Sun className="w-4 h-4 mr-3" /> : <Moon className="w-4 h-4 mr-3" />}
-            {mounted && theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            {mounted && resolvedTheme === 'dark' ? <Sun className="w-4 h-4 mr-3" /> : <Moon className="w-4 h-4 mr-3" />}
+            {mounted && resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode'}
           </button>
           
           <button
