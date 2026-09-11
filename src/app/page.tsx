@@ -18,8 +18,11 @@ export default async function LandingPage() {
       {/* Navigation */}
       <nav className="border-b border-[var(--color-brand-graphite)] border-opacity-20">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="font-serif font-bold text-xl tracking-tight">
-            Reminder App
+          <div className="flex items-center space-x-3">
+            <img src="/logo.png" alt="Reminder App Logo" className="w-8 h-8 object-contain" />
+            <div className="font-serif font-bold text-xl tracking-tight">
+              Reminder App
+            </div>
           </div>
           <div className="flex items-center space-x-6">
             <Link href="/auth" className="text-sm font-medium hover:text-[var(--color-brand-amber)] transition-colors">

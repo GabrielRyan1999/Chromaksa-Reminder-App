@@ -69,7 +69,8 @@ export default function Sidebar({ selectedDate, onSelectDate }: SidebarProps) {
 
   return (
     <aside className="w-[340px] shrink-0 border-r border-[var(--color-brand-graphite)] border-opacity-20 flex flex-col h-full bg-[var(--color-background)]">
-      <div className="p-5 border-b border-[var(--color-brand-graphite)] border-opacity-20 flex items-center justify-between">
+      <div className="p-5 border-b border-[var(--color-brand-graphite)] border-opacity-20 flex items-center">
+        <img src="/logo.png" alt="Reminder App Logo" className="w-8 h-8 object-contain mr-3" />
         <h1 className="font-serif font-bold text-xl">Reminder App</h1>
       </div>
       
