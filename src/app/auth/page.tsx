@@ -141,6 +141,13 @@ function AuthForm() {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              {isLogin && (
+                <div className="flex justify-end mt-2">
+                  <a href="/auth/forgot-password" className="text-xs text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)] hover:underline transition-colors">
+                    Forgot Password?
+                  </a>
+                </div>
+              )}
             </div>
 
             <button
