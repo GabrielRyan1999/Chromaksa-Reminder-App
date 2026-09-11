@@ -8,18 +8,20 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
   const [name, setName] = useState(initialData.name || "");
   const [timezone, setTimezone] = useState(initialData.timezone);
   const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
   const router = useRouter();
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    setMessage({ text: "", type: "" });
     try {
       await updateUserSettings({ name, timezone });
       router.refresh();
-      alert("Settings saved!");
+      setMessage({ text: "Settings saved successfully!", type: "success" });
     } catch (err) {
       console.error(err);
-      alert("Failed to save settings");
+      setMessage({ text: "Failed to save settings.", type: "error" });
     } finally {
       setSaving(false);
     }
@@ -83,13 +85,20 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
         </p>
       </div>
 
-      <button 
-        type="submit"
-        disabled={saving}
-        className="px-4 py-2 bg-[var(--color-foreground)] text-[var(--color-background)] rounded text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-      >
-        {saving ? "Saving..." : "Save Settings"}
-      </button>
+      <div className="flex items-center space-x-4">
+        <button 
+          type="submit"
+          disabled={saving}
+          className="px-4 py-2 bg-[var(--color-foreground)] text-[var(--color-background)] rounded text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+        >
+          {saving ? "Saving..." : "Save Settings"}
+        </button>
+        {message.text && (
+          <p className={`text-sm ${message.type === 'success' ? 'text-[var(--color-brand-sage)]' : 'text-red-500'}`}>
+            {message.text}
+          </p>
+        )}
+      </div>
     </form>
   );
 }
