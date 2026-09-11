@@ -79,7 +79,7 @@ function AuthForm() {
         {/* Auth Form Card */}
         <div className="bg-[var(--color-background)] border border-[var(--color-brand-graphite)] border-opacity-20 rounded-xl p-6 shadow-xl">
           {error && (
-            <div className="mb-4 p-3 bg-red-500 bg-opacity-10 border border-red-500 border-opacity-20 rounded text-red-500 text-sm text-center">
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded text-red-600 dark:text-red-400 text-sm text-center font-medium">
               {error}
             </div>
           )}
