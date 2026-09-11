@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_fallback');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
+  },
+});
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
@@ -35,8 +41,8 @@ export async function GET(request: Request) {
     for (const reminder of dueReminders) {
       if (!reminder.user.email) continue;
       
-      await resend.emails.send({
-        from: 'Reminders <onboarding@resend.dev>', // Use testing domain for now
+      await transporter.sendMail({
+        from: `"Reminder App" <${process.env.GMAIL_USER}>`,
         to: reminder.user.email,
         subject: `Reminder: ${reminder.title}`,
         html: `
