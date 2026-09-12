@@ -94,28 +94,50 @@ export function PushNotificationManager() {
     setLoading(false);
   }
 
+  async function unsubscribe() {
+    setLoading(true);
+    setMessage('');
+    try {
+      if (subscription) {
+        await subscription.unsubscribe();
+        setSubscription(null);
+        setMessage('Notifications disabled for this browser.');
+      }
+    } catch (error) {
+      console.error('Error unsubscribing:', error);
+      setMessage('Error disabling notifications.');
+    }
+    setLoading(false);
+  }
+
   if (!isSupported) {
     return <p className="text-sm text-[var(--color-brand-graphite)]">Push notifications are not supported in this browser.</p>;
   }
 
   return (
     <div className="bg-black/5 dark:bg-white/5 rounded-lg p-4 border border-[var(--color-brand-graphite)] border-opacity-20 mt-4">
-      <h3 className="text-sm font-medium text-[var(--color-foreground)] mb-2">Desktop Notifications</h3>
-      {subscription ? (
-        <p className="text-sm text-emerald-600 dark:text-emerald-400">? You are subscribed to desktop notifications on this browser.</p>
-      ) : (
-        <>
-          <p className="text-xs text-[var(--color-brand-graphite)] mb-3">Enable desktop notifications to receive alerts when your reminders are due.</p>
-          <button
-            onClick={subscribe}
-            disabled={loading}
-            className="bg-[var(--color-foreground)] text-[var(--color-background)] px-4 py-2 rounded text-xs font-semibold hover:opacity-90 disabled:opacity-50"
-          >
-            {loading ? 'Subscribing...' : 'Enable Notifications'}
-          </button>
-        </>
-      )}
-      {message && <p className="text-xs mt-2 text-[var(--color-brand-graphite)]">{message}</p>}
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-medium text-[var(--color-foreground)] mb-1">Desktop Notifications</h3>
+          <p className="text-xs text-[var(--color-brand-graphite)]">Receive alerts when your reminders are due.</p>
+        </div>
+        
+        <button
+          onClick={() => subscription ? unsubscribe() : subscribe()}
+          disabled={loading}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+            subscription ? 'bg-[var(--color-brand-sage)]' : 'bg-[var(--color-brand-graphite)] bg-opacity-30'
+          } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              subscription ? 'translate-x-6' : 'translate-x-1'
+            }`}
+          />
+        </button>
+      </div>
+      
+      {message && <p className="text-xs mt-3 text-[var(--color-brand-graphite)]">{message}</p>}
     </div>
   );
 }
