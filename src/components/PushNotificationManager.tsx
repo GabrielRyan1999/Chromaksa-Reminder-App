@@ -6,12 +6,15 @@ export function PushNotificationManager() {
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       setIsSupported(true);
       registerServiceWorker();
+    } else {
+      setIsInitialized(true);
     }
   }, []);
 
@@ -25,6 +28,8 @@ export function PushNotificationManager() {
       setSubscription(sub);
     } catch (error) {
       console.error('Service worker registration failed:', error);
+    } finally {
+      setIsInitialized(true);
     }
   }
 
@@ -156,13 +161,17 @@ export function PushNotificationManager() {
         
         <button
           onClick={() => subscription ? unsubscribe() : subscribe()}
-          disabled={loading}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+          disabled={loading || !isInitialized}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full focus:outline-none ${
+            isInitialized ? 'transition-colors duration-200' : ''
+          } ${
             subscription ? 'bg-[var(--color-brand-sage)]' : 'bg-[var(--color-brand-graphite)] bg-opacity-30'
-          } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+          } ${loading || !isInitialized ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+            className={`inline-block h-4 w-4 transform rounded-full bg-white ${
+              isInitialized ? 'transition-transform duration-200' : ''
+            } ${
               subscription ? 'translate-x-6' : 'translate-x-1'
             }`}
           />
