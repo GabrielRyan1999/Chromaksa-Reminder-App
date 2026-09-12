@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { getReminders, createReminder, toggleReminderStatus, deleteReminder, bumpReminder } from "@/app/actions/reminders";
 import ReminderCard from "./ReminderCard";
+import { TimePicker } from "@/components/ui/time-picker";
 
 interface ReminderListProps {
   selectedDate: Date;
@@ -14,7 +15,7 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
   const [loading, setLoading] = useState(true);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [isAdding, setIsAdding] = useState(false);
-  const [time, setTime] = useState("09:00");
+  const [time, setTime] = useState("09:00 AM");
   const [recurrence, setRecurrence] = useState("none");
   const dateKey = format(selectedDate, "yyyy-MM-dd");
 
@@ -75,9 +76,21 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
     e.preventDefault();
     if (!newTaskTitle.trim()) return;
     
-    const [h, m] = (time || "09:00").split(':');
-    const hours = parseInt(h, 10) || 9;
-    const minutes = parseInt(m, 10) || 0;
+    let hours = 9;
+    let minutes = 0;
+    
+    if (time.includes("AM") || time.includes("PM")) {
+      const [hm, ap] = time.split(" ");
+      const [hStr, mStr] = hm.split(":");
+      hours = parseInt(hStr, 10);
+      minutes = parseInt(mStr, 10);
+      if (ap === "PM" && hours < 12) hours += 12;
+      if (ap === "AM" && hours === 12) hours = 0;
+    } else {
+      const [hStr, mStr] = (time || "09:00").split(':');
+      hours = parseInt(hStr, 10) || 9;
+      minutes = parseInt(mStr, 10) || 0;
+    }
     
     const dueAt = new Date(selectedDate);
     dueAt.setHours(hours, minutes, 0, 0);
@@ -136,26 +149,15 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
             className="w-full bg-black/5 dark:bg-white/5 rounded px-3 py-2 text-sm text-[var(--color-foreground)] border-none focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none mb-3"
           />
           <div className="flex items-center gap-3 mb-4">
-            <select
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="bg-black/5 dark:bg-white/5 rounded px-2 py-1.5 text-xs text-[var(--color-foreground)] border-none outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#1a1a1a] dark:[&>option]:text-white cursor-pointer"
-            >
-              {Array.from({ length: 24 * 4 }).map((_, i) => {
-                const totalMinutes = i * 15;
-                const h = Math.floor(totalMinutes / 60);
-                const m = totalMinutes % 60;
-                const ampm = h >= 12 ? 'PM' : 'AM';
-                const displayH = h % 12 || 12;
-                const val = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-                const label = `${displayH.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${ampm}`;
-                return <option key={val} value={val}>{label}</option>;
-              })}
-            </select>
+            <TimePicker 
+              value={time} 
+              onChange={setTime} 
+              showCurrentTimeButton={false} 
+            />
             <select 
               value={recurrence}
               onChange={(e) => setRecurrence(e.target.value)}
-              className="bg-black/5 dark:bg-white/5 rounded px-2 py-1.5 text-xs text-[var(--color-foreground)] border-none outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#1a1a1a] dark:[&>option]:text-white cursor-pointer"
+              className="bg-black/5 dark:bg-white/5 rounded px-2 py-2 h-9 text-xs text-[var(--color-foreground)] border border-[var(--color-brand-graphite)] border-opacity-20 outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#1a1a1a] dark:[&>option]:text-white cursor-pointer"
             >
               <option value="none">One-off</option>
               <option value="daily">Daily</option>
