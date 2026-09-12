@@ -57,3 +57,13 @@ p {
   --tw-prose-th-borders: var(--color-graphite);
   --tw-prose-td-borders: var(--color-graphite);
 }
+
+/* Tiptap Placeholder */
+.tiptap p.is-editor-empty:first-child::before {
+  color: var(--color-graphite);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}

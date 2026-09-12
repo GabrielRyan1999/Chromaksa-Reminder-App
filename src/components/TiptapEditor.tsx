@@ -2,6 +2,7 @@
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
 import { useEffect, useState, useRef } from 'react'
 import { format } from 'date-fns'
 import { getNote, saveNote } from '@/app/actions/notes'
@@ -17,7 +18,12 @@ export default function TiptapEditor({ selectedDate }: TiptapEditorProps) {
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder: 'Jot down your notes for the day...',
+      }),
+    ],
     editorProps: {
       attributes: {
         class: 'prose prose-p:max-w-[80ch] focus:outline-none min-h-[300px]',
@@ -67,7 +73,7 @@ export default function TiptapEditor({ selectedDate }: TiptapEditorProps) {
         if (note && note.content) {
           editor.commands.setContent(note.content as any);
         } else {
-          editor.commands.setContent('<p>Jot down your notes for the day...</p>');
+          editor.commands.clearContent();
         }
       } catch (error) {
         console.error("Failed to load note", error);
