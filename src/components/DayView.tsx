@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import TiptapEditor from "./TiptapEditor";
 import ReminderList from "./ReminderList";
+import OnboardingBanner from "./OnboardingBanner";
 
 interface DayViewProps {
   selectedDate: Date;
@@ -56,6 +57,8 @@ export default function DayView({ selectedDate, user }: DayViewProps) {
             </div>
           )}
         </header>
+
+        <OnboardingBanner />
 
         {/* Reminders section */}
         <section className="mb-14">
