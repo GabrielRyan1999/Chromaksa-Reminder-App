@@ -66,10 +66,42 @@ export function PushNotificationManager() {
         throw new Error('Missing VAPID public key. Check your environment variables.');
       }
 
-      const sub = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidKey),
-      });
+      // Try to clear any existing (possibly corrupted or old VAPID) subscription first
+      try {
+        const existingSub = await registration.pushManager.getSubscription();
+        if (existingSub) {
+          await existingSub.unsubscribe();
+        }
+      } catch (e) {
+        console.warn("Could not fetch/unsubscribe existing push subscription", e);
+      }
+
+      let sub;
+      try {
+        sub = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidKey),
+        });
+      } catch (subError: any) {
+        console.warn("First subscribe attempt failed, trying to unregister SW and retry...", subError);
+        // Force unregister all service workers
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (let r of registrations) {
+          await r.unregister();
+        }
+        
+        // Re-register
+        const newRegistration = await navigator.serviceWorker.register('/sw.js', {
+          scope: '/',
+          updateViaCache: 'none',
+        });
+        
+        // Retry subscribe
+        sub = await newRegistration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidKey),
+        });
+      }
 
       setSubscription(sub);
 
