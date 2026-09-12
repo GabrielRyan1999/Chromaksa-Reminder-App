@@ -10,11 +10,11 @@ export async function getUserSettings() {
 
   return prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { name: true, email: true, timezone: true }
+    select: { name: true, email: true, timezone: true, emailNotifications: true }
   });
 }
 
-export async function updateUserSettings(data: { name: string, timezone: string }) {
+export async function updateUserSettings(data: { name: string, timezone: string, emailNotifications?: boolean }) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) throw new Error("Unauthorized");
 
@@ -23,6 +23,7 @@ export async function updateUserSettings(data: { name: string, timezone: string 
     data: {
       name: data.name,
       timezone: data.timezone,
+      ...(data.emailNotifications !== undefined && { emailNotifications: data.emailNotifications })
     }
   });
 }

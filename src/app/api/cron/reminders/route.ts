@@ -58,7 +58,7 @@ export async function GET(request: Request) {
     for (const reminder of dueReminders) {
       
       // Email Notification
-      if (reminder.notifyEmail && reminder.user.email) {
+      if (reminder.notifyEmail && reminder.user.emailNotifications && reminder.user.email) {
         await transporter.sendMail({
           from: `"Reminder App" <${process.env.GMAIL_USER}>`,
           to: reminder.user.email,
