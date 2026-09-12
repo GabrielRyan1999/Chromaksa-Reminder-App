@@ -11,6 +11,8 @@ interface TiptapEditorProps {
   selectedDate: Date;
 }
 
+const notesCache: Record<string, any> = {};
+
 export default function TiptapEditor({ selectedDate }: TiptapEditorProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -52,6 +54,7 @@ export default function TiptapEditor({ selectedDate }: TiptapEditorProps) {
       setIsSaving(true);
       const json = editor.getJSON();
       const currentDateKey = dateKeyRef.current;
+      notesCache[currentDateKey] = json; // Update cache immediately
       
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
@@ -75,8 +78,10 @@ export default function TiptapEditor({ selectedDate }: TiptapEditorProps) {
         e.preventDefault();
         if (editor) {
           setIsSaving(true);
+          const json = editor.getJSON();
+          notesCache[dateKey] = json;
           if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-          saveNote(dateKey, editor.getJSON()).then(() => setIsSaving(false));
+          saveNote(dateKey, json).then(() => setIsSaving(false));
         }
       }
     };
@@ -87,16 +92,21 @@ export default function TiptapEditor({ selectedDate }: TiptapEditorProps) {
   useEffect(() => {
     async function loadNote() {
       if (!editor) return;
-      setInitialLoading(true);
       
-      // Prevent clearContent from triggering an empty save
       isProgrammaticUpdate.current = true;
-      editor.commands.clearContent();
+      if (notesCache[dateKey]) {
+        editor.commands.setContent(notesCache[dateKey]);
+        setInitialLoading(false);
+      } else {
+        editor.commands.clearContent();
+        setInitialLoading(true);
+      }
       isProgrammaticUpdate.current = false;
       
       try {
         const note = await getNote(dateKey);
         if (note && note.content) {
+          notesCache[dateKey] = note.content;
           isProgrammaticUpdate.current = true;
           editor.commands.setContent(note.content as any);
           isProgrammaticUpdate.current = false;

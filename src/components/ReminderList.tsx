@@ -11,6 +11,8 @@ interface ReminderListProps {
   selectedDate: Date;
 }
 
+const remindersCache: Record<string, any[]> = {};
+
 export default function ReminderList({ selectedDate }: ReminderListProps) {
   const [reminders, setReminders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,9 +43,18 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
 
   useEffect(() => {
     async function fetchReminders() {
-      setLoading(true);
+      // Use cache for instant UI if available
+      if (remindersCache[dateKey]) {
+        setReminders(remindersCache[dateKey]);
+        setLoading(false);
+      } else {
+        setReminders([]); // Clear immediately when switching to uncached date
+        setLoading(true);
+      }
+
       try {
         const data = await getReminders(dateKey);
+        remindersCache[dateKey] = data;
         setReminders(data);
       } catch (e) {
         console.error(e);
@@ -56,19 +67,31 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
 
   async function handleToggle(id: string, currentStatus: string) {
     const newStatus = currentStatus === "done" ? "pending" : "done";
-    setReminders(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
+    setReminders(prev => {
+      const updated = prev.map(r => r.id === id ? { ...r, status: newStatus } : r);
+      remindersCache[dateKey] = updated;
+      return updated;
+    });
     await toggleReminderStatus(id, newStatus);
     window.dispatchEvent(new Event("refresh-categories"));
   }
 
   async function handleDelete(id: string) {
-    setReminders(prev => prev.filter(r => r.id !== id));
+    setReminders(prev => {
+      const updated = prev.filter(r => r.id !== id);
+      remindersCache[dateKey] = updated;
+      return updated;
+    });
     await deleteReminder(id);
     window.dispatchEvent(new Event("refresh-categories"));
   }
 
   async function handleBumpToTomorrow(id: string) {
-    setReminders(prev => prev.filter(r => r.id !== id));
+    setReminders(prev => {
+      const updated = prev.filter(r => r.id !== id);
+      remindersCache[dateKey] = updated;
+      return updated;
+    });
     await bumpReminder(id);
     window.dispatchEvent(new Event("refresh-categories"));
   }
@@ -105,17 +128,29 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
       recurrenceRule: recurrence === "none" ? null : recurrence,
     };
     
-    setReminders([...reminders, newReminder]);
+    setReminders(prev => {
+      const updated = [...prev, newReminder];
+      remindersCache[dateKey] = updated;
+      return updated;
+    });
     setNewTaskTitle("");
     setIsAdding(false);
 
     try {
       const created = await createReminder(newTaskTitle, dueAt, newReminder.recurrenceRule);
-      setReminders(prev => prev.map(r => r.id === tempId ? created : r));
+      setReminders(prev => {
+        const updated = prev.map(r => r.id === tempId ? created : r);
+        remindersCache[dateKey] = updated;
+        return updated;
+      });
       window.dispatchEvent(new Event("refresh-categories"));
     } catch (e) {
       console.error(e);
-      setReminders(prev => prev.filter(r => r.id !== tempId));
+      setReminders(prev => {
+        const updated = prev.filter(r => r.id !== tempId);
+        remindersCache[dateKey] = updated;
+        return updated;
+      });
     }
   }
 
