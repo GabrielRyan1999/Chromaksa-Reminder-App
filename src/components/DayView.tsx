@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
+import { Menu } from "lucide-react";
 import TiptapEditor from "./TiptapEditor";
 import ReminderList from "./ReminderList";
 import OnboardingBanner from "./OnboardingBanner";
@@ -9,9 +10,10 @@ import OnboardingBanner from "./OnboardingBanner";
 interface DayViewProps {
   selectedDate: Date;
   user: any;
+  onMenuClick?: () => void;
 }
 
-export default function DayView({ selectedDate, user }: DayViewProps) {
+export default function DayView({ selectedDate, user, onMenuClick }: DayViewProps) {
   const dateString = format(selectedDate, "EEEE, MMMM d, yyyy");
 
   const [timeStr, setTimeStr] = useState<string>("");
@@ -40,13 +42,19 @@ export default function DayView({ selectedDate, user }: DayViewProps) {
 
   return (
     <div className="flex-1 overflow-y-auto bg-[var(--color-background)]">
-      <div className="max-w-2xl mx-auto px-8 py-16">
-        <header className="mb-10 flex items-end justify-between border-b border-[var(--color-brand-graphite)] border-opacity-20 pb-6">
+      <div className="max-w-2xl mx-auto px-4 md:px-8 py-8 md:py-16">
+        <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-[var(--color-brand-graphite)] border-opacity-20 pb-6 gap-4">
           <div>
-            <div className="text-[var(--color-brand-graphite)] font-medium mb-2 text-lg">
-              {greeting}, <span className="text-[var(--color-brand-amber)] font-semibold">{user?.name?.split(' ')[0] || "User"}</span>!
+            <div className="flex items-center gap-3 text-[var(--color-brand-graphite)] font-medium mb-2 text-lg">
+              <button 
+                onClick={onMenuClick}
+                className="md:hidden p-1 -ml-1 text-[var(--color-foreground)] hover:bg-black/5 dark:hover:bg-white/5 rounded transition-colors"
+              >
+                <Menu className="w-5 h-5" />
+              </button>
+              <div>{greeting}, <span className="text-[var(--color-brand-amber)] font-semibold">{user?.name?.split(' ')[0] || "User"}</span>!</div>
             </div>
-            <h2 className="font-serif text-4xl text-[var(--color-foreground)] tracking-tight">
+            <h2 className="font-serif text-3xl md:text-4xl text-[var(--color-foreground)] tracking-tight">
               {dateString}
             </h2>
           </div>

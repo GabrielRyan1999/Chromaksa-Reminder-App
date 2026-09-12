@@ -26,7 +26,7 @@ export default function UserMenu({ user }: { user: any }) {
   }, []);
 
   return (
-    <div className="absolute top-6 right-8 z-50" ref={menuRef}>
+    <div className="absolute top-6 right-4 md:right-8 z-50" ref={menuRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-10 h-10 rounded-full bg-[var(--color-foreground)] text-[var(--color-background)] flex items-center justify-center font-bold shadow-md hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-brand-amber)] dark:focus:ring-offset-[#111827]"

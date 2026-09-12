@@ -184,7 +184,7 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
             placeholder="What do you need to do?"
             className="w-full bg-black/5 dark:bg-white/5 rounded px-3 py-2 text-sm text-[var(--color-foreground)] border-none focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none mb-3"
           />
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex flex-wrap items-center gap-3 mb-4">
             <TimePicker 
               value={time} 
               onChange={setTime} 

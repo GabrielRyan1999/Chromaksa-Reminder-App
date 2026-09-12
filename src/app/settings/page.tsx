@@ -16,7 +16,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] flex flex-col">
-      <header className="p-8 pb-0">
+      <header className="p-4 md:p-8 pb-0">
         <Link 
           href="/app" 
           className="inline-flex items-center text-sm font-medium text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)] transition-colors"
@@ -26,7 +26,7 @@ export default async function SettingsPage() {
         </Link>
       </header>
       
-      <main className="max-w-xl mx-auto px-8 py-12 w-full">
+      <main className="max-w-xl mx-auto px-4 md:px-8 py-8 md:py-12 w-full">
         <h1 className="font-serif text-3xl font-bold mb-8">Settings</h1>
         {settings && <SettingsForm initialData={settings} />}
       </main>

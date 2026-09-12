@@ -148,7 +148,7 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
         <h3 className="text-sm font-bold text-red-500 mb-2">Danger Zone</h3>
         
         {!showConfirmDelete ? (
-          <div className="flex items-center justify-between bg-red-500/5 p-4 rounded-lg border border-red-500/20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-red-500/5 p-4 rounded-lg border border-red-500/20 gap-4">
             <div>
               <p className="text-sm font-medium text-[var(--color-foreground)]">Delete All Reminders</p>
               <p className="text-xs text-[var(--color-brand-graphite)] mt-1">This action cannot be undone. All your reminders and tasks will be permanently removed.</p>
@@ -156,7 +156,7 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
             <button
               type="button"
               onClick={() => setShowConfirmDelete(true)}
-              className="px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500/20 rounded text-xs font-semibold transition-colors shrink-0 ml-4"
+              className="px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500/20 rounded text-xs font-semibold transition-colors shrink-0 sm:ml-4 w-full sm:w-auto"
             >
               Delete All
             </button>
