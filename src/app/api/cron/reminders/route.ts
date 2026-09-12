@@ -59,6 +59,19 @@ export async function GET(request: Request) {
       
       // Email Notification
       if (reminder.notifyEmail && reminder.user.emailNotifications && reminder.user.email) {
+        
+        // Format the due date in the user's local timezone
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          timeZoneName: 'short',
+          timeZone: reminder.user.timezone || 'UTC'
+        }).format(new Date(reminder.dueAt));
+
         await transporter.sendMail({
           from: `"Reminder App" <${process.env.GMAIL_USER}>`,
           to: reminder.user.email,
@@ -67,7 +80,7 @@ export async function GET(request: Request) {
             <div>
               <h2>${reminder.title}</h2>
               ${reminder.description ? `<p>${reminder.description}</p>` : ''}
-              <p>Due at: ${reminder.dueAt.toLocaleString()}</p>
+              <p>Due at: <strong>${formattedDate}</strong></p>
               <p>Log in to your Reminder App to mark this as done.</p>
             </div>
           `,
