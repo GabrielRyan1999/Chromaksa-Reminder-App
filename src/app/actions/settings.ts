@@ -27,3 +27,12 @@ export async function updateUserSettings(data: { name: string, timezone: string,
     }
   });
 }
+
+export async function deleteAllReminders() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  return prisma.reminder.deleteMany({
+    where: { userId: session.user.id }
+  });
+}
