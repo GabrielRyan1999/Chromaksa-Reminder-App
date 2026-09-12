@@ -133,19 +133,29 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
             placeholder="What do you need to do?"
-            className="w-full bg-black/5 rounded px-3 py-2 text-sm text-[var(--color-foreground)] border-none focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none mb-3"
+            className="w-full bg-black/5 dark:bg-white/5 rounded px-3 py-2 text-sm text-[var(--color-foreground)] border-none focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none mb-3"
           />
           <div className="flex items-center gap-3 mb-4">
-            <input 
-              type="time" 
+            <select
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              className="bg-black/5 rounded px-2 py-1.5 text-xs text-[var(--color-foreground)] border-none outline-none"
-            />
+              className="bg-black/5 dark:bg-white/5 rounded px-2 py-1.5 text-xs text-[var(--color-foreground)] border-none outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#1a1a1a] dark:[&>option]:text-white cursor-pointer"
+            >
+              {Array.from({ length: 24 * 4 }).map((_, i) => {
+                const totalMinutes = i * 15;
+                const h = Math.floor(totalMinutes / 60);
+                const m = totalMinutes % 60;
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                const displayH = h % 12 || 12;
+                const val = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+                const label = `${displayH.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${ampm}`;
+                return <option key={val} value={val}>{label}</option>;
+              })}
+            </select>
             <select 
               value={recurrence}
               onChange={(e) => setRecurrence(e.target.value)}
-              className="bg-black/5 rounded px-2 py-1.5 text-xs text-[var(--color-foreground)] border-none outline-none"
+              className="bg-black/5 dark:bg-white/5 rounded px-2 py-1.5 text-xs text-[var(--color-foreground)] border-none outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#1a1a1a] dark:[&>option]:text-white cursor-pointer"
             >
               <option value="none">One-off</option>
               <option value="daily">Daily</option>
