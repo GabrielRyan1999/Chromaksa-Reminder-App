@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { updateUserSettings } from "../actions/settings";
 import { useRouter } from "next/navigation";
+import { PushNotificationManager } from "@/components/PushNotificationManager";
 
 export default function SettingsForm({ initialData }: { initialData: { name: string | null, email: string, timezone: string, emailNotifications?: boolean } }) {
   const [name, setName] = useState(initialData.name || "");
@@ -106,6 +107,8 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
           />
         </button>
       </div>
+
+      <PushNotificationManager />
 
       <div className="flex items-center space-x-4">
         <button 

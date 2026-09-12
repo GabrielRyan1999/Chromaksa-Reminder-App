@@ -115,7 +115,7 @@ export function PushNotificationManager() {
   }
 
   return (
-    <div className="bg-black/5 dark:bg-white/5 rounded-lg p-4 border border-[var(--color-brand-graphite)] border-opacity-20 mt-4">
+    <div className="bg-black/5 dark:bg-white/5 rounded-lg p-4 border border-[var(--color-brand-graphite)] border-opacity-20">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-sm font-medium text-[var(--color-foreground)] mb-1">Desktop Notifications</h3>
