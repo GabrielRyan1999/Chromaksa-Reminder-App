@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { getReminders, createReminder, toggleReminderStatus, deleteReminder, bumpReminder } from "@/app/actions/reminders";
 import ReminderCard from "./ReminderCard";
 import { TimePicker } from "@/components/ui/time-picker";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ReminderListProps {
   selectedDate: Date;
@@ -154,16 +155,19 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
               onChange={setTime} 
               showCurrentTimeButton={false} 
             />
-            <select 
-              value={recurrence}
-              onChange={(e) => setRecurrence(e.target.value)}
-              className="bg-black/5 dark:bg-white/5 rounded px-2 py-2 h-9 text-xs text-[var(--color-foreground)] border border-[var(--color-brand-graphite)] border-opacity-20 outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#1a1a1a] dark:[&>option]:text-white cursor-pointer"
-            >
-              <option value="none">One-off</option>
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-            </select>
+            <div className="w-[120px]">
+              <Select value={recurrence} onValueChange={setRecurrence}>
+                <SelectTrigger size="sm">
+                  <SelectValue placeholder="Recurrence" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">One-off</SelectItem>
+                  <SelectItem value="daily">Daily</SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <button 

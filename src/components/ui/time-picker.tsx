@@ -92,6 +92,36 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     [onChange, value]
   );
 
+  const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, "");
+    if (val.length > 2) val = val.slice(0, 2);
+    setHour(val);
+  };
+
+  const handleHourBlur = () => {
+    let h = parseInt(hour, 10);
+    if (isNaN(h) || h === 0) h = 12;
+    if (h > 12) h = 12;
+    const finalH = String(h).padStart(2, "0");
+    setHour(finalH);
+    handleChange(finalH, minute, amPm);
+  };
+
+  const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, "");
+    if (val.length > 2) val = val.slice(0, 2);
+    setMinute(val);
+  };
+
+  const handleMinuteBlur = () => {
+    let m = parseInt(minute, 10);
+    if (isNaN(m)) m = 0;
+    if (m > 59) m = 59;
+    const finalM = String(m).padStart(2, "0");
+    setMinute(finalM);
+    handleChange(hour, finalM, amPm);
+  };
+
   return (
     <div
       className={
@@ -101,54 +131,30 @@ export const TimePicker: React.FC<TimePickerProps> = ({
       }
     >
       <div className="flex flex-row items-center gap-1">
-        <div className="w-[60px]">
-          <Select
-            disabled={disabled}
-            onValueChange={React.useCallback(
-              (val: string) => handleChange(val, minute, amPm),
-              [minute, amPm, handleChange]
-            )}
+        <div className="w-[50px]">
+          <input
+            type="text"
             value={hour}
-          >
-            <SelectTrigger size="sm">
-              <SelectValue placeholder="HH" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: 12 }, (_, i) =>
-                String(i + 1).padStart(2, "0")
-              ).map((h) => (
-                <SelectItem key={h} value={h}>
-                  {h}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={handleHourChange}
+            onBlur={handleHourBlur}
+            disabled={disabled}
+            placeholder="HH"
+            className="flex h-8 w-full items-center justify-center rounded-md border border-[var(--color-brand-graphite)] border-opacity-20 bg-[var(--color-background)] px-2 text-center text-xs transition-all placeholder:opacity-60 focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] disabled:cursor-not-allowed disabled:opacity-50 hover:bg-black/5 dark:hover:bg-white/5"
+          />
         </div>
         <span className="font-bold text-[var(--color-brand-graphite)]">:</span>
-        <div className="w-[60px]">
-          <Select
-            disabled={disabled}
-            onValueChange={React.useCallback(
-              (val: string) => handleChange(hour, val, amPm),
-              [hour, amPm, handleChange]
-            )}
+        <div className="w-[50px]">
+          <input
+            type="text"
             value={minute}
-          >
-            <SelectTrigger size="sm">
-              <SelectValue placeholder="MM" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: 60 }, (_, i) =>
-                String(i).padStart(2, "0")
-              ).map((m) => (
-                <SelectItem key={m} value={m}>
-                  {m}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={handleMinuteChange}
+            onBlur={handleMinuteBlur}
+            disabled={disabled}
+            placeholder="MM"
+            className="flex h-8 w-full items-center justify-center rounded-md border border-[var(--color-brand-graphite)] border-opacity-20 bg-[var(--color-background)] px-2 text-center text-xs transition-all placeholder:opacity-60 focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-amber)] disabled:cursor-not-allowed disabled:opacity-50 hover:bg-black/5 dark:hover:bg-white/5"
+          />
         </div>
-        <div className="w-[70px]">
+        <div className="w-[65px]">
           <Select
             disabled={disabled}
             onValueChange={React.useCallback(
@@ -157,7 +163,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
             )}
             value={amPm}
           >
-            <SelectTrigger size="sm">
+            <SelectTrigger size="sm" className="px-2 text-center justify-center gap-1">
               <SelectValue placeholder="AM/PM" />
             </SelectTrigger>
             <SelectContent>
