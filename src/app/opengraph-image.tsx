@@ -9,7 +9,9 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
-  const baseUrl = process.env.VERCEL_URL 
+  const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL 
     ? `https://${process.env.VERCEL_URL}` 
     : 'http://localhost:3000';
 
