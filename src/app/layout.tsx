@@ -18,6 +18,8 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Analytics } from "@vercel/analytics/react";
+import CookieBanner from "@/components/CookieBanner";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -30,6 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
+          <Analytics />
+          <CookieBanner />
       </body>
     </html>
   );
