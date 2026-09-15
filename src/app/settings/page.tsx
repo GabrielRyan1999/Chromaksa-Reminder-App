@@ -17,7 +17,7 @@ export default async function SettingsPage() {
   const settings = await getUserSettings();
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] flex flex-col">
+    <main className="min-h-screen bg-[var(--color-background)] flex flex-col">
       <header className="p-4 md:p-8 pb-0">
         <Link 
           href="/app" 
@@ -32,6 +32,6 @@ export default async function SettingsPage() {
         <h1 className="font-serif text-3xl font-bold mb-8">Settings</h1>
         {settings && <SettingsForm initialData={settings} />}
       </main>
-    </div>
+    </main>
   );
 }

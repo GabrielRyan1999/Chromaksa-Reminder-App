@@ -19,7 +19,7 @@ export default async function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] font-sans selection:bg-[var(--color-brand-amber)] selection:text-white">
+    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] font-sans selection:bg-[var(--color-brand-amber)] selection:text-white">
       
       {/* Navigation */}
       <nav className="border-b border-[var(--color-brand-graphite)] border-opacity-20">
