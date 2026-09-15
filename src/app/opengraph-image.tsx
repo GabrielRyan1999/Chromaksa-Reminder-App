@@ -9,6 +9,10 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : 'http://localhost:3000';
+
   return new ImageResponse(
     (
       <div
@@ -28,7 +32,7 @@ export default async function Image() {
       >
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 40 }}>
           <img
-            src="https://chromaksa-reminder-app.vercel.app/logo.png"
+            src={`${baseUrl}/logo.png`}
             alt="Logo"
             width={80}
             height={80}

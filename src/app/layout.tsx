@@ -12,8 +12,12 @@ const serifFont = Lora({
   subsets: ["latin"],
 });
 
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://chromaksa-reminder-app.vercel.app'),
+  metadataBase: new URL(defaultUrl),
   title: "Reminder & Daily Notes",
   description: "Personal planning tool for your daily notes and reminders.",
 };
