@@ -27,6 +27,13 @@ export default async function Image() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 40 }}>
+          <img
+            src="https://chromaksa-reminder-app.vercel.app/logo.png"
+            alt="Logo"
+            width={80}
+            height={80}
+            style={{ marginRight: 24 }}
+          />
           <div style={{ fontSize: 64, fontWeight: 800, letterSpacing: '-0.05em' }}>
             Reminder App
           </div>

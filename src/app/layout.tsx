@@ -13,6 +13,7 @@ const serifFont = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://chromaksa-reminder-app.vercel.app'),
   title: "Reminder & Daily Notes",
   description: "Personal planning tool for your daily notes and reminders.",
 };
