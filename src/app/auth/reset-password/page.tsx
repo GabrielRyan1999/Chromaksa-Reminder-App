@@ -50,10 +50,12 @@ function ResetPasswordForm() {
   return (
     <div className="w-full max-w-sm">
       <div className="text-center mb-8 flex flex-col items-center">
-        <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3" />
-        <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight">
-          Set New Password
-        </h1>
+        <Link href="/" className="flex flex-col items-center group">
+            <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3 group-hover:scale-105 transition-transform" />
+            <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight group-hover:text-[var(--color-brand-amber)] transition-colors">
+              Set New Password
+            </h1>
+          </Link>
         <p className="text-sm text-[var(--color-brand-graphite)] mt-2">
           Choose a strong password for your account
         </p>
@@ -122,3 +124,4 @@ export default function ResetPasswordPage() {
     </div>
   );
 }
+

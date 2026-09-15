@@ -2,6 +2,7 @@
 
 import { useState, Suspense } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { registerUser } from "@/app/actions/auth";
@@ -75,10 +76,12 @@ function AuthForm() {
         
         {/* Logo / Header */}
         <div className="text-center mb-8 flex flex-col items-center">
-          <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3" />
-          <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight">
-            Reminder App
-          </h1>
+          <Link href="/" className="flex flex-col items-center group">
+            <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3 group-hover:scale-105 transition-transform" />
+            <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight group-hover:text-[var(--color-brand-amber)] transition-colors">
+              Reminder App
+            </h1>
+          </Link>
           <p className="text-sm text-[var(--color-brand-graphite)] mt-2">
             {isLogin ? "Welcome back" : "Create a new account"}
           </p>
@@ -206,3 +209,4 @@ export default function AuthPage() {
     </Suspense>
   );
 }
+

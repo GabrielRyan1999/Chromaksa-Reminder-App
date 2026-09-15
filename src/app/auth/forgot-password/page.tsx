@@ -44,10 +44,12 @@ export default function ForgotPasswordPage() {
         </Link>
 
         <div className="text-center mb-8 flex flex-col items-center">
-          <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3" />
-          <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight">
-            Reset Password
-          </h1>
+          <Link href="/" className="flex flex-col items-center group">
+            <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3 group-hover:scale-105 transition-transform" />
+            <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight group-hover:text-[var(--color-brand-amber)] transition-colors">
+              Reset Password
+            </h1>
+          </Link>
           <p className="text-sm text-[var(--color-brand-graphite)] mt-2">
             Enter your email to receive a reset link
           </p>
@@ -99,3 +101,4 @@ export default function ForgotPasswordPage() {
     </div>
   );
 }
+
