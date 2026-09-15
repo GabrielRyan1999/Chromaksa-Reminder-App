@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, CheckCircle2, FileText } from "lucide-react";
+import { Calendar, CheckCircle2, FileText } from "lucide-react";
 import HeroCarousel from "@/components/HeroCarousel";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -52,7 +52,7 @@ export default async function LandingPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link href="/auth?mode=signup" className="group flex items-center justify-center bg-[var(--color-foreground)] text-[var(--color-background)] px-8 py-4 rounded-full text-lg font-bold hover:opacity-90 transition-all w-full sm:w-auto">
             Try it for free
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            
           </Link>
         </div>
         
