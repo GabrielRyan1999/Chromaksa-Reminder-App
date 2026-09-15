@@ -3,6 +3,8 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import ClientDashboard from "@/components/ClientDashboard";
 
+export const metadata = { title: 'Dashboard | Reminder App', description: 'Manage your daily notes and reminders.' };
+
 export default async function AppDashboard() {
   const session = await getServerSession(authOptions);
   

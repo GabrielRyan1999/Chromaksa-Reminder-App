@@ -6,6 +6,8 @@ import SettingsForm from "./SettingsForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+export const metadata = { title: 'Settings | Reminder App', description: 'Manage your account settings.' };
+
 export default async function SettingsPage() {
   const session = await getServerSession(authOptions);
   if (!session) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { requestPasswordReset } from "@/app/actions/reset-password";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -37,7 +38,7 @@ export default function ForgotPasswordPage() {
         </Link>
 
         <div className="text-center mb-8 flex flex-col items-center">
-          <img src="/logo.png" alt="Reminder App Logo" className="w-12 h-12 object-contain mb-3" />
+          <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3" />
           <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight">
             Reset Password
           </h1>

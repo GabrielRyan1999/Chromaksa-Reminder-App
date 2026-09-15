@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
+import Image from "next/image";
 import { updatePassword } from "@/app/actions/reset-password";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
@@ -48,7 +49,7 @@ function ResetPasswordForm() {
   return (
     <div className="w-full max-w-sm">
       <div className="text-center mb-8 flex flex-col items-center">
-        <img src="/logo.png" alt="Reminder App Logo" className="w-12 h-12 object-contain mb-3" />
+        <Image src="/logo.png" alt="Reminder App Logo" width={48} height={48} className="object-contain mb-3" />
         <h1 className="font-serif text-2xl font-bold text-[var(--color-foreground)] tracking-tight">
           Set New Password
         </h1>

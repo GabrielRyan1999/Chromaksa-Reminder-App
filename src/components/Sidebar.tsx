@@ -4,6 +4,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getAllReminders } from "@/app/actions/reminders";
 import { CATEGORY_COLORS } from "@/lib/constants";
@@ -70,7 +71,7 @@ export default function Sidebar({ selectedDate, onSelectDate }: SidebarProps) {
   return (
     <aside className="w-[340px] shrink-0 border-r border-[var(--color-brand-graphite)] border-opacity-20 flex flex-col h-full bg-[var(--color-background)]">
       <div className="p-5 border-b border-[var(--color-brand-graphite)] border-opacity-20 flex items-center">
-        <img src="/logo.png" alt="Reminder App Logo" className="w-8 h-8 object-contain mr-3" />
+        <Image src="/logo.png" alt="Reminder App Logo" width={32} height={32} className="object-contain mr-3" />
         <h1 className="font-serif font-bold text-xl">Reminder App</h1>
       </div>
       
