@@ -38,6 +38,7 @@ export default function FeedbackPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="bg-black/5 dark:bg-white/5 border border-[var(--color-brand-graphite)] border-opacity-20 rounded-xl p-6 sm:p-8">
+            <input type="text" name="_gotcha" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium text-[var(--color-brand-graphite)] mb-1">
                 Your Email Address

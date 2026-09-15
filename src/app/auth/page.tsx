@@ -20,6 +20,7 @@ function AuthForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
+  const [hp, setHp] = useState("");
 
   const router = useRouter();
 
@@ -28,6 +29,11 @@ function AuthForm() {
     setLoading(true);
     setError(null);
     setSuccess(null);
+
+    if (hp) {
+      setLoading(false);
+      return; // Silent reject
+    }
 
     if (isLogin) {
       // Handle Login
@@ -92,6 +98,11 @@ function AuthForm() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Honeypot field - invisible to humans */}
+            <div className="absolute opacity-0 -z-10 w-0 h-0 overflow-hidden" aria-hidden="true">
+              <label htmlFor="website-url">Website URL</label>
+              <input type="text" id="website-url" name="website_url" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+            </div>
             {!isLogin && (
               <div>
                 <label className="block text-xs font-medium text-[var(--color-brand-graphite)] mb-1">
@@ -170,6 +181,11 @@ function AuthForm() {
                 setIsLogin(!isLogin);
                 setError(null);
                 setSuccess(null);
+
+    if (hp) {
+      setLoading(false);
+      return; // Silent reject
+    }
               }}
               className="text-[var(--color-foreground)] font-medium hover:underline"
             >

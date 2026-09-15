@@ -16,6 +16,7 @@ function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hp, setHp] = useState("");
 
   if (!token) {
     return (
@@ -71,6 +72,11 @@ function ResetPasswordForm() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Honeypot field - invisible to humans */}
+            <div className="absolute opacity-0 -z-10 w-0 h-0 overflow-hidden" aria-hidden="true">
+              <label htmlFor="website-url">Website URL</label>
+              <input type="text" id="website-url" name="website_url" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+            </div>
           <div>
             <label className="block text-xs font-medium text-[var(--color-brand-graphite)] mb-1">
               New Password
