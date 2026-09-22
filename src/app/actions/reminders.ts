@@ -47,7 +47,7 @@ export async function getReminders(date: string) {
   return reminders;
 }
 
-export async function createReminder(title: string, dueAt: Date, recurrenceRule: string | null = null) {
+export async function createReminder(title: string, dueAt: Date, recurrenceRule: string | null = null, category: string | null = null) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) throw new Error("Unauthorized");
 
@@ -57,6 +57,7 @@ export async function createReminder(title: string, dueAt: Date, recurrenceRule:
       title,
       dueAt,
       recurrenceRule,
+      category,
       notifyDesktop: true,
       notifyEmail: true,
     }

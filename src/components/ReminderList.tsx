@@ -20,6 +20,7 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [time, setTime] = useState("09:00 AM");
   const [recurrence, setRecurrence] = useState("none");
+  const [category, setCategory] = useState("none_category");
   const dateKey = format(selectedDate, "yyyy-MM-dd");
 
   useEffect(() => {
@@ -126,6 +127,7 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
       status: "pending",
       dueAt,
       recurrenceRule: recurrence === "none" ? null : recurrence,
+      category: category === "none_category" ? null : category,
     };
     
     setReminders(prev => {
@@ -137,7 +139,7 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
     setIsAdding(false);
 
     try {
-      const created = await createReminder(newTaskTitle, dueAt, newReminder.recurrenceRule);
+      const created = await createReminder(newTaskTitle, dueAt, newReminder.recurrenceRule, newReminder.category);
       setReminders(prev => {
         const updated = prev.map(r => r.id === tempId ? created : r);
         remindersCache[dateKey] = updated;
@@ -190,19 +192,39 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
               onChange={setTime} 
               showCurrentTimeButton={false} 
             />
-            <div className="w-[120px]">
-              <Select value={recurrence} onValueChange={setRecurrence}>
-                <SelectTrigger size="sm">
-                  <SelectValue placeholder="Recurrence" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">One-off</SelectItem>
-                  <SelectItem value="daily">Daily</SelectItem>
-                  <SelectItem value="weekly">Weekly</SelectItem>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+                          <div className="w-[120px]">
+                <Select value={recurrence} onValueChange={setRecurrence}>
+                  <SelectTrigger size="sm">
+                    <SelectValue placeholder="Recurrence" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">One-off</SelectItem>
+                    <SelectItem value="daily">Daily</SelectItem>
+                    <SelectItem value="weekly">Weekly</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-[130px]">
+                <Select value={category} onValueChange={setCategory}>
+                  <SelectTrigger size="sm">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none_category">No Category</SelectItem>
+                    <SelectItem value="Work">Work</SelectItem>
+                    <SelectItem value="Study">Study</SelectItem>
+                    <SelectItem value="Errands">Errands</SelectItem>
+                    <SelectItem value="Household">Household</SelectItem>
+                    <SelectItem value="Personal">Personal</SelectItem>
+                    <SelectItem value="Pets">Pets</SelectItem>
+                    <SelectItem value="Social">Social</SelectItem>
+                    <SelectItem value="Hobby">Hobby</SelectItem>
+                    <SelectItem value="Leisure">Leisure</SelectItem>
+                    <SelectItem value="Travel">Travel</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
           </div>
           <div className="flex items-center gap-2">
             <button 
@@ -231,3 +253,5 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
     </div>
   );
 }
+
+
