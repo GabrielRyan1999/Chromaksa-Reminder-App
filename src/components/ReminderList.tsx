@@ -146,9 +146,7 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
         return updated;
       });
       window.dispatchEvent(new Event("refresh-categories"));
-    } catch (e) {
-      console.error(e);
-      setReminders(prev => {
+    } catch (e: any) { alert(e.message || String(e)); console.error(e); setReminders(prev => {
         const updated = prev.filter(r => r.id !== tempId);
         remindersCache[dateKey] = updated;
         return updated;
@@ -253,5 +251,7 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
     </div>
   );
 }
+
+
 
 
