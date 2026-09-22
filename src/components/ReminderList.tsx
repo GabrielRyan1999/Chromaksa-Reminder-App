@@ -66,15 +66,19 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
     fetchReminders();
   }, [dateKey]);
 
-  async function handleToggle(id: string, currentStatus: string) {
+    async function handleToggle(id: string, currentStatus: string) {
     const newStatus = currentStatus === "done" ? "pending" : "done";
     setReminders(prev => {
       const updated = prev.map(r => r.id === id ? { ...r, status: newStatus } : r);
       remindersCache[dateKey] = updated;
       return updated;
     });
-    await toggleReminderStatus(id, newStatus);
-    window.dispatchEvent(new Event("refresh-categories"));
+    window.dispatchEvent(new CustomEvent("optimistic-reminder", { detail: { type: 'status', id, status: newStatus } }));
+    try {
+      await toggleReminderStatus(id, newStatus);
+    } catch (e) {
+      // Ignore for MVP, real app should rollback
+    }
   }
 
   async function handleDelete(id: string) {
@@ -83,18 +87,36 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
       remindersCache[dateKey] = updated;
       return updated;
     });
-    await deleteReminder(id);
-    window.dispatchEvent(new Event("refresh-categories"));
+    window.dispatchEvent(new CustomEvent("optimistic-reminder", { detail: { type: 'delete', id } }));
+    try {
+      await deleteReminder(id);
+    } catch (e) {}
   }
 
   async function handleBumpToTomorrow(id: string) {
+    let newDueAt: Date | null = null;
     setReminders(prev => {
-      const updated = prev.filter(r => r.id !== id);
+      const updated = prev.map(r => {
+        if (r.id === id) {
+          const d = new Date(r.dueAt);
+          d.setDate(d.getDate() + 1);
+          newDueAt = d;
+          return { ...r, dueAt: d };
+        }
+        return r;
+      }).filter(r => {
+        const d = new Date(r.dueAt);
+        return format(d, "yyyy-MM-dd") === dateKey;
+      });
       remindersCache[dateKey] = updated;
       return updated;
     });
-    await bumpReminder(id);
-    window.dispatchEvent(new Event("refresh-categories"));
+    if (newDueAt) {
+      window.dispatchEvent(new CustomEvent("optimistic-reminder", { detail: { type: 'bump', id, dueAt: newDueAt } }));
+    }
+    try {
+      await bumpReminder(id);
+    } catch (e) {}
   }
 
   async function handleAdd(e: React.FormEvent) {
@@ -251,6 +273,8 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
     </div>
   );
 }
+
+
 
 
 

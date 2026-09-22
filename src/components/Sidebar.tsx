@@ -25,7 +25,25 @@ export default function Sidebar({ selectedDate, onSelectDate }: SidebarProps) {
     // Listen to custom event to refresh categories when a new reminder is added
     const handleRefresh = () => getAllReminders().then(setReminders).catch(console.error);
     window.addEventListener("refresh-categories", handleRefresh);
-    return () => window.removeEventListener("refresh-categories", handleRefresh);
+    
+    const handleOptimistic = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { type, reminder, id, status, dueAt } = customEvent.detail;
+      setReminders(prev => {
+        if (type === 'add') return [...prev, reminder];
+        if (type === 'delete') return prev.filter(r => r.id !== id);
+        if (type === 'update') return prev.map(r => r.id === id ? { ...r, ...reminder } : r);
+        if (type === 'status') return prev.map(r => r.id === id ? { ...r, status } : r);
+        if (type === 'bump') return prev.map(r => r.id === id ? { ...r, dueAt } : r);
+        return prev;
+      });
+    };
+    window.addEventListener("optimistic-reminder", handleOptimistic);
+
+    return () => {
+      window.removeEventListener("refresh-categories", handleRefresh);
+      window.removeEventListener("optimistic-reminder", handleOptimistic);
+    };
   }, []);
 
   // Group by category for the sidebar list
