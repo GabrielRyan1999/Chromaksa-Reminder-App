@@ -14,8 +14,8 @@ interface SidebarProps {
   onSelectDate: (date: Date) => void;
 }
 
-export default function Sidebar({ selectedDate, onSelectDate }: SidebarProps) {
-  const [reminders, setReminders] = useState<any[]>([]);
+export default function Sidebar({ selectedDate, onSelectDate, initialReminders }: SidebarProps) {
+  const [reminders, setReminders] = useState<any[]>(initialReminders || []);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -186,3 +186,4 @@ export default function Sidebar({ selectedDate, onSelectDate }: SidebarProps) {
     </aside>
   );
 }
+

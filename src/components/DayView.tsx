@@ -76,7 +76,7 @@ export default function DayView({ selectedDate, user, onMenuClick }: DayViewProp
             </h3>
           </div>
           
-          <ReminderList selectedDate={selectedDate} />
+          <ReminderList selectedDate={selectedDate} initialReminders={initialReminders} />
         </section>
 
         <hr className="border-t border-[var(--color-brand-graphite)] border-opacity-20 mb-8" />
@@ -89,3 +89,4 @@ export default function DayView({ selectedDate, user, onMenuClick }: DayViewProp
     </div>
   );
 }
+

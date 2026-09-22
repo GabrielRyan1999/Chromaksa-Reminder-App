@@ -13,7 +13,7 @@ interface ReminderListProps {
 
 const remindersCache: Record<string, any[]> = {};
 
-export default function ReminderList({ selectedDate }: ReminderListProps) {
+export default function ReminderList({ selectedDate, initialReminders }: ReminderListProps) {
   const [reminders, setReminders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [newTaskTitle, setNewTaskTitle] = useState("");
@@ -21,7 +21,11 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
   const [time, setTime] = useState("09:00 AM");
   const [recurrence, setRecurrence] = useState("none");
   const [category, setCategory] = useState("none_category");
-  const dateKey = format(selectedDate, "yyyy-MM-dd");
+    const dateKey = format(selectedDate, "yyyy-MM-dd");
+  const isInitialLoad = !remindersCache[dateKey] && initialReminders && dateKey === format(new Date(), "yyyy-MM-dd");
+  if (isInitialLoad && initialReminders) {
+    remindersCache[dateKey] = initialReminders;
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -273,6 +277,8 @@ export default function ReminderList({ selectedDate }: ReminderListProps) {
     </div>
   );
 }
+
+
 
 
 
