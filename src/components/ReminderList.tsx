@@ -47,27 +47,38 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
   }, []);
 
   useEffect(() => {
+    let ignore = false;
     async function fetchReminders() {
+      let hasCache = false;
       // Use cache for instant UI if available
       if (remindersCache[dateKey]) {
         setReminders(remindersCache[dateKey]);
         setLoading(false);
+        hasCache = true;
       } else {
         setReminders([]); // Clear immediately when switching to uncached date
         setLoading(true);
       }
+      
+      // Skip fetch if this is initial server prefetch
+      if (hasCache && initialReminders && dateKey === format(new Date(), "yyyy-MM-dd")) {
+        return;
+      }
 
       try {
         const data = await getReminders(dateKey);
-        remindersCache[dateKey] = data;
-        setReminders(data);
+        if (!ignore) {
+          remindersCache[dateKey] = data;
+          setReminders(data);
+        }
       } catch (e) {
         console.error(e);
       } finally {
-        setLoading(false);
+        if (!ignore) setLoading(false);
       }
     }
     fetchReminders();
+    return () => { ignore = true; };
   }, [dateKey]);
 
     async function handleToggle(id: string, currentStatus: string) {
