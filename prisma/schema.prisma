@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  
 }
 
 datasource db {
@@ -46,6 +47,7 @@ model Reminder {
   status          String    @default("pending") // "pending", "done"
   recurrenceRule  String?
   category        String?   // Added for Aline's UI
+  qstashMessageId String?
   subtasks        Subtask[] // Added for Aline's UI
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -84,4 +86,7 @@ model PushSubscription {
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+
+
 
