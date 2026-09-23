@@ -109,6 +109,7 @@ export async function toggleReminderStatus(id: string, status: string) {
 
   if (status === "done" && reminder.qstashMessageId) {
     await cancelReminder(reminder.qstashMessageId);
+    await prisma.reminder.update({ where: { id }, data: { qstashMessageId: null } });
   } else if (status === "pending" && !updated.qstashMessageId) {
     const msgId = await scheduleReminder(id, new Date(updated.dueAt));
     if (msgId) await prisma.reminder.update({ where: { id }, data: { qstashMessageId: msgId } });

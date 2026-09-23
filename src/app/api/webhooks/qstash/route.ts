@@ -42,6 +42,10 @@ async function handler(request: Request) {
       return NextResponse.json({ message: 'Skipped' });
     }
 
+    if (new Date(reminder.dueAt) > new Date(Date.now() + 60_000)) {
+      return NextResponse.json({ message: 'Skipped: not yet due (stale message)' });
+    }
+
     if (reminder.notifyEmail && reminder.user.emailNotifications && reminder.user.email) {
       const formattedDate = new Intl.DateTimeFormat('en-US', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',

@@ -11,8 +11,9 @@ export async function scheduleReminder(reminderId: string, dueAt: Date) {
   const notBefore = Math.max(Math.floor(dueAt.getTime() / 1000), Math.floor(Date.now() / 1000) + 1);
 
   try {
+    const appUrl = process.env.APP_URL || "https://reminder-app-chromaksa.vercel.app";
     const res = await qstash.publishJSON({
-      url: "https://reminder-app-chromaksa.vercel.app/api/webhooks/qstash",
+      url: `${appUrl}/api/webhooks/qstash`,
       body: { reminderId },
       notBefore,
     });
