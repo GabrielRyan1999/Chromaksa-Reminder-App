@@ -42,9 +42,15 @@ async function handler(request: Request) {
       return NextResponse.json({ message: 'Skipped' });
     }
 
-    if (new Date(reminder.dueAt) > new Date(Date.now() + 60_000)) {
+    const notifyAt = new Date(reminder.dueAt.getTime() - reminder.notifyBeforeMinutes * 60_000);
+    if (notifyAt > new Date(Date.now() + 60_000)) {
       return NextResponse.json({ message: 'Skipped: not yet due (stale message)' });
     }
+
+    const isAdvanceNotice = reminder.notifyBeforeMinutes > 0;
+    const subjectPrefix = isAdvanceNotice
+      ? `Upcoming in ${reminder.notifyBeforeMinutes} min: `
+      : `Reminder: `;
 
     if (reminder.notifyEmail && reminder.user.emailNotifications && reminder.user.email) {
       const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -56,15 +62,15 @@ async function handler(request: Request) {
       await transporter.sendMail({
         from: 'Reminder App <' + process.env.GMAIL_USER + '>',
         to: reminder.user.email,
-        subject: 'Reminder: ' + reminder.title,
-        html: '<div><h2>' + reminder.title + '</h2>' + (reminder.description ? '<p>' + reminder.description + '</p>' : '') + '<p>Due at: <strong>' + formattedDate + '</strong></p></div>',
+        subject: subjectPrefix + reminder.title,
+        html: '<div><h2>' + subjectPrefix + reminder.title + '</h2>' + (reminder.description ? '<p>' + reminder.description + '</p>' : '') + '<p>Due at: <strong>' + formattedDate + '</strong></p></div>',
       }).catch(err => console.error("Email error", err));
     }
 
     if (reminder.notifyDesktop && reminder.user.pushSubscriptions.length > 0) {
       const payload = JSON.stringify({
-        title: reminder.title,
-        body: reminder.description || 'Its time for your reminder!',
+        title: subjectPrefix + reminder.title,
+        body: reminder.description || (isAdvanceNotice ? `Due soon at ${new Date(reminder.dueAt).toLocaleTimeString()}` : 'Its time for your reminder!'),
       });
 
       for (const sub of reminder.user.pushSubscriptions) {

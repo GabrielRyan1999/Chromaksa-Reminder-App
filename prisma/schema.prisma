@@ -47,6 +47,7 @@ model Reminder {
   status          String    @default("pending") // "pending", "done"
   recurrenceRule  String?
   category        String?   // Added for Aline's UI
+  notifyBeforeMinutes Int @default(0)
   qstashMessageId String?
   subtasks        Subtask[] // Added for Aline's UI
   createdAt       DateTime  @default(now())

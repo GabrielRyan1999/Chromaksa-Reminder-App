@@ -21,6 +21,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
   const [time, setTime] = useState("09:00 AM");
   const [recurrence, setRecurrence] = useState("none");
   const [category, setCategory] = useState("none_category");
+  const [notifyBeforeMinutes, setNotifyBeforeMinutes] = useState("0");
     const dateKey = format(selectedDate, "yyyy-MM-dd");
   const isInitialLoad = !remindersCache[dateKey] && initialReminders && dateKey === format(new Date(), "yyyy-MM-dd");
   if (isInitialLoad && initialReminders) {
@@ -165,6 +166,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
       dueAt,
       recurrenceRule: recurrence === "none" ? null : recurrence,
       category: category === "none_category" ? null : category,
+      notifyBeforeMinutes: parseInt(notifyBeforeMinutes, 10),
       isNew: true, // add flag for animation
     };
     
@@ -177,7 +179,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
     setIsAdding(false);
 
     try {
-      const created = await createReminder(newTaskTitle, dueAt, newReminder.recurrenceRule, newReminder.category);
+      const created = await createReminder(newTaskTitle, dueAt, newReminder.recurrenceRule, newReminder.category, newReminder.notifyBeforeMinutes);
       setReminders(prev => {
         const updated = prev.map(r => r.id === tempId ? { ...created, isNew: true } : r);
         remindersCache[dateKey] = updated;
@@ -268,6 +270,20 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
                     <SelectItem value="Hobby">Hobby</SelectItem>
                     <SelectItem value="Leisure">Leisure</SelectItem>
                     <SelectItem value="Travel">Travel</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-[150px]">
+                <Select value={notifyBeforeMinutes} onValueChange={setNotifyBeforeMinutes}>
+                  <SelectTrigger size="sm">
+                    <SelectValue placeholder="Alert Time" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">At time of reminder</SelectItem>
+                    <SelectItem value="5">5 minutes before</SelectItem>
+                    <SelectItem value="15">15 minutes before</SelectItem>
+                    <SelectItem value="30">30 minutes before</SelectItem>
+                    <SelectItem value="60">1 hour before</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

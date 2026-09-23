@@ -48,7 +48,7 @@ export async function getReminders(date: string) {
   return reminders;
 }
 
-export async function createReminder(title: string, dueAt: Date, recurrenceRule: string | null = null, category: string | null = null) {
+export async function createReminder(title: string, dueAt: Date, recurrenceRule: string | null = null, category: string | null = null, notifyBeforeMinutes: number = 0) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) throw new Error("Unauthorized");
 
@@ -61,10 +61,12 @@ export async function createReminder(title: string, dueAt: Date, recurrenceRule:
       category,
       notifyDesktop: true,
       notifyEmail: true,
+      notifyBeforeMinutes,
     }
   });
 
-  const messageId = await scheduleReminder(reminder.id, dueAt);
+  const notifyAt = new Date(dueAt.getTime() - notifyBeforeMinutes * 60_000);
+  const messageId = await scheduleReminder(reminder.id, notifyAt);
   if (messageId) {
     await prisma.reminder.update({
       where: { id: reminder.id },
@@ -86,7 +88,8 @@ export async function bumpReminder(id: string) {
   const newDueAt = new Date(reminder.dueAt);
   newDueAt.setDate(newDueAt.getDate() + 1);
 
-  const messageId = await scheduleReminder(id, newDueAt);
+  const notifyAt = new Date(newDueAt.getTime() - reminder.notifyBeforeMinutes * 60_000);
+  const messageId = await scheduleReminder(id, notifyAt);
   if (reminder.qstashMessageId) await cancelReminder(reminder.qstashMessageId);
 
   return prisma.reminder.update({
@@ -111,7 +114,7 @@ export async function toggleReminderStatus(id: string, status: string) {
     await cancelReminder(reminder.qstashMessageId);
     await prisma.reminder.update({ where: { id }, data: { qstashMessageId: null } });
   } else if (status === "pending" && !updated.qstashMessageId) {
-    const msgId = await scheduleReminder(id, new Date(updated.dueAt));
+    const msgId = await scheduleReminder(id, new Date(new Date(updated.dueAt).getTime() - updated.notifyBeforeMinutes * 60_000));
     if (msgId) await prisma.reminder.update({ where: { id }, data: { qstashMessageId: msgId } });
   }
 
@@ -139,9 +142,11 @@ export async function toggleReminderStatus(id: string, status: string) {
         status: "pending",
         notifyDesktop: reminder.notifyDesktop,
         notifyEmail: reminder.notifyEmail,
+        notifyBeforeMinutes: reminder.notifyBeforeMinutes,
       }
     });
-    const msgId = await scheduleReminder(spawned.id, nextDueAt);
+    const notifyAt = new Date(nextDueAt.getTime() - reminder.notifyBeforeMinutes * 60_000);
+    const msgId = await scheduleReminder(spawned.id, notifyAt);
     if (msgId) await prisma.reminder.update({ where: { id: spawned.id }, data: { qstashMessageId: msgId } });
   }
 
@@ -213,3 +218,4 @@ export async function deleteSubtask(id: string) {
     where: { id }
   });
 }
+
