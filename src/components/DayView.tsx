@@ -11,9 +11,10 @@ interface DayViewProps {
   selectedDate: Date;
   user: any;
   onMenuClick?: () => void;
+  initialReminders?: any[];
 }
 
-export default function DayView({ selectedDate, user, onMenuClick }: DayViewProps) {
+export default function DayView({ selectedDate, user, onMenuClick, initialReminders }: DayViewProps) {
   const dateString = format(selectedDate, "EEEE, MMMM d, yyyy");
 
   const [timeStr, setTimeStr] = useState<string>("");
