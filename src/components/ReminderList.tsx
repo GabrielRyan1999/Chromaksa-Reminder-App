@@ -165,10 +165,11 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
       dueAt,
       recurrenceRule: recurrence === "none" ? null : recurrence,
       category: category === "none_category" ? null : category,
+      isNew: true, // add flag for animation
     };
     
     setReminders(prev => {
-      const updated = [...prev, newReminder];
+      const updated = [...prev, newReminder].sort((a, b) => new Date(a.dueAt).getTime() - new Date(b.dueAt).getTime());
       remindersCache[dateKey] = updated;
       return updated;
     });
@@ -178,10 +179,20 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
     try {
       const created = await createReminder(newTaskTitle, dueAt, newReminder.recurrenceRule, newReminder.category);
       setReminders(prev => {
-        const updated = prev.map(r => r.id === tempId ? created : r);
+        const updated = prev.map(r => r.id === tempId ? { ...created, isNew: true } : r);
         remindersCache[dateKey] = updated;
         return updated;
       });
+      
+      // Remove isNew after a few seconds so it doesn't animate forever
+      setTimeout(() => {
+        setReminders(prev => {
+          const removedFlag = prev.map(r => r.id === created.id ? { ...r, isNew: false } : r);
+          remindersCache[dateKey] = removedFlag;
+          return removedFlag;
+        });
+      }, 3000);
+      
       window.dispatchEvent(new Event("refresh-categories"));
     } catch (e: any) { alert(e.message || String(e)); console.error(e); setReminders(prev => {
         const updated = prev.filter(r => r.id !== tempId);

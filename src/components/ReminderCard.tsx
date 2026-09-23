@@ -58,7 +58,9 @@ export default function ReminderCard({ reminder, onRemove, onBump, onToggle }: a
   }
 
   return (
-    <div className={`mb-3 border rounded-lg transition-all duration-300 ${
+    <div className={`mb-3 border rounded-lg transition-all duration-1000 ${
+      reminder.isNew ? 'ring-2 ring-[var(--color-brand-amber)] shadow-lg scale-[1.01]' : 'ring-0 scale-100'
+    } ${
       reminder.status === 'done' 
         ? 'border-[var(--color-brand-sage)]/20 bg-[var(--color-brand-sage)]/5 opacity-50 grayscale-[50%]' 
         : 'border-[var(--color-brand-graphite)] border-opacity-20 bg-[var(--color-background)] hover:border-opacity-30 shadow-sm'
