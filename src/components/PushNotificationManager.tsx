@@ -136,7 +136,15 @@ export function PushNotificationManager() {
     setMessage('');
     try {
       if (subscription) {
-        await subscription.unsubscribe();
+        await subscription.unsubscribe().catch(e => console.warn('Local unsubscribe failed, ignoring.', e));
+        
+        try {
+          const { deletePushSubscription } = await import("@/app/actions/settings");
+          await deletePushSubscription(subscription.endpoint);
+        } catch (dbErr) {
+          console.warn("Failed to delete from DB", dbErr);
+        }
+        
         setSubscription(null);
         setMessage('Notifications disabled for this browser.');
       }

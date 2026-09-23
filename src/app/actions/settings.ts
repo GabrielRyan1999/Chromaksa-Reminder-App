@@ -36,3 +36,15 @@ export async function deleteAllReminders() {
     where: { userId: session.user.id }
   });
 }
+
+export async function deletePushSubscription(endpoint: string) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) return;
+  try {
+    await prisma.pushSubscription.deleteMany({
+      where: { endpoint, userId: session.user.id }
+    });
+  } catch (e) {
+    console.error('Failed to delete push subscription from DB', e);
+  }
+}
