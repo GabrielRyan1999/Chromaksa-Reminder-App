@@ -24,8 +24,9 @@ export default function OnboardingBanner() {
   return (
     <div className="bg-[var(--color-foreground)] text-[var(--color-background)] p-4 rounded-xl mb-8 flex items-start justify-between relative shadow-lg">
       <div className="flex items-start space-x-4 pr-8">
-        <div className="bg-[var(--color-background)] p-2 rounded-full mt-1">
-          <Bell className="w-5 h-5 text-[var(--color-foreground)]" />
+        <div className="bg-[var(--color-brand-amber)] bg-opacity-20 p-2 rounded-full mt-1 relative">
+          <Bell className="w-5 h-5 text-[var(--color-brand-amber)] animate-pulse" aria-hidden="true" />
+          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
         </div>
         <div>
           <h3 className="font-bold text-base mb-1">Never miss a deadline!</h3>
@@ -42,13 +43,14 @@ export default function OnboardingBanner() {
       </div>
       
       <button 
+        aria-label="Close banner"
         onClick={() => {
           localStorage.setItem("onboarding_banner_dismissed", "true");
           setShow(false);
         }}
         className="absolute top-4 right-4 p-1 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-colors"
       >
-        <X className="w-4 h-4" />
+        <X className="w-4 h-4" aria-hidden="true" />
       </button>
     </div>
   );
