@@ -23,6 +23,7 @@ export default function GlobalSearch({ onSelectDate }: { onSelectDate: (date: Da
       }
       if (e.key === 'Escape' && isOpen) {
         setIsOpen(false);
+                        setQuery("");
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -62,11 +63,15 @@ export default function GlobalSearch({ onSelectDate }: { onSelectDate: (date: Da
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed top-6 right-20 md:right-24 z-50 w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 text-[var(--color-foreground)] flex items-center justify-center shadow-sm border border-[var(--color-brand-graphite)] border-opacity-20 hover:bg-black/10 dark:hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-amber)]"
+        className="fixed top-6 right-20 md:right-24 z-50 h-10 px-3 md:px-4 rounded-full bg-black/5 dark:bg-white/5 text-[var(--color-foreground)] flex items-center justify-center gap-2 shadow-sm border border-[var(--color-brand-graphite)] border-opacity-20 hover:bg-black/10 dark:hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-amber)]"
         aria-label="Search (Ctrl+K)"
         title="Search (Ctrl+K)"
       >
         <Search className="w-4 h-4" />
+        <div className="hidden md:flex items-center gap-1 text-[10px] font-medium text-[var(--color-brand-graphite)]">
+          <kbd className="bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded font-mono">Ctrl</kbd>
+          <span>K</span>
+        </div>
       </button>
     );
   }
@@ -95,7 +100,7 @@ export default function GlobalSearch({ onSelectDate }: { onSelectDate: (date: Da
             className="flex-1 bg-transparent border-none outline-none text-[var(--color-foreground)] placeholder-[var(--color-brand-graphite)] text-base"
           />
           <button 
-            onClick={() => setIsOpen(false)}
+            onClick={() => { setIsOpen(false); setQuery(""); }}
             className="p-1.5 text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)] hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-colors ml-2"
           >
             <X className="w-5 h-5" />
@@ -133,6 +138,7 @@ export default function GlobalSearch({ onSelectDate }: { onSelectDate: (date: Da
                       onClick={() => {
                         onSelectDate(new Date(r.dueAt));
                         setIsOpen(false);
+                        setQuery("");
                       }}
                       className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors group flex items-start"
                     >
@@ -169,6 +175,7 @@ export default function GlobalSearch({ onSelectDate }: { onSelectDate: (date: Da
                         const [y, m, d] = n.date.split("-");
                         onSelectDate(new Date(parseInt(y), parseInt(m)-1, parseInt(d)));
                         setIsOpen(false);
+                        setQuery("");
                       }}
                       className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors group flex items-start"
                     >
