@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import Sidebar from "./Sidebar";
 import DayView from "./DayView";
 import UserMenu from "./UserMenu";
+import GlobalSearch from "./GlobalSearch";
 
 export default function ClientDashboard({ user, initialAllReminders, initialTodayReminders }: { user: any, initialAllReminders?: any[], initialTodayReminders?: any[] }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -28,6 +29,7 @@ export default function ClientDashboard({ user, initialAllReminders, initialToda
       <div className="flex-1 flex flex-col h-full overflow-hidden min-w-0 w-full">
         <DayView selectedDate={selectedDate} user={user} onMenuClick={() => setSidebarOpen(true)} />
       </div>
+      <GlobalSearch onSelectDate={(d) => { setSelectedDate(d); setSidebarOpen(false); }} />
       <UserMenu user={user} />
     </div>
   );
