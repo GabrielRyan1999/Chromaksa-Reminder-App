@@ -129,7 +129,7 @@ function AuthForm() {
               <input
                 type="email"
                 required
-                value={email}
+                value={email} autoComplete="username"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-black/5 dark:bg-white/5 border-none rounded p-2 text-sm text-[var(--color-foreground)] focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none transition-shadow"
                 placeholder="hello@example.com"
@@ -144,14 +144,14 @@ function AuthForm() {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  value={password}
+                  value={password} autoComplete={isLogin ? "current-password" : "new-password"}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-black/5 dark:bg-white/5 border-none rounded p-2 text-sm text-[var(--color-foreground)] focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none transition-shadow pr-10"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)] p-1 rounded transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}

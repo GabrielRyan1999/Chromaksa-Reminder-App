@@ -114,7 +114,7 @@ export default function SettingsForm({ initialData }: { initialData: { name: str
         
         <button
           type="button"
-          onClick={() => setEmailNotifications(!emailNotifications)}
+          role="switch" aria-checked={emailNotifications} onClick={() => setEmailNotifications(!emailNotifications)}
           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
             emailNotifications ? 'bg-[var(--color-brand-sage)]' : 'bg-[var(--color-brand-graphite)] bg-opacity-30'
           }`}
