@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { prisma } from './src/lib/prisma';
 async function check() {
-  const latest = await prisma.reminder.findMany({ orderBy: { createdAt: 'desc' }, take: 5 });
-  console.log(latest.map(r => r.title + ' | ' + r.category + ' | ' + r.createdAt));
+  const users = await prisma.user.findMany({
+    where: { email: { contains: 'loaf' } }
+  });
+  console.log(users.map(u => u.email));
 }
-check().finally(() => prisma.$disconnect());
+check();

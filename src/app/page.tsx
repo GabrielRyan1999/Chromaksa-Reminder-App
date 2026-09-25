@@ -68,10 +68,10 @@ export default async function LandingPage() {
             <p className="text-[var(--color-brand-graphite)] text-lg text-center">A focused toolkit designed for modern professionals.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             <div className="bg-[var(--color-background)] p-8 rounded-2xl border border-[var(--color-brand-graphite)] border-opacity-10 hover:border-[var(--color-brand-amber)] transition-colors">
               <div className="w-12 h-12 rounded-full bg-[var(--color-brand-amber)] bg-opacity-20 flex items-center justify-center mb-6">
-                <CheckCircle2 className="w-6 h-6 text-[var(--color-brand-amber)]" />
+                <CheckCircle2 className="w-6 h-6 text-[var(--color-brand-amber)]" aria-hidden="true" />
               </div>
               <h3 className="font-bold text-xl mb-3">Expandable Reminders</h3>
               <p className="text-[var(--color-brand-graphite)] leading-relaxed text-sm">
@@ -81,7 +81,7 @@ export default async function LandingPage() {
 
             <div className="bg-[var(--color-background)] p-8 rounded-2xl border border-[var(--color-brand-graphite)] border-opacity-10 hover:border-[var(--color-brand-sage)] transition-colors">
               <div className="w-12 h-12 rounded-full bg-[var(--color-brand-sage)] bg-opacity-20 flex items-center justify-center mb-6">
-                <Calendar className="w-6 h-6 text-[var(--color-brand-sage)]" />
+                <Calendar className="w-6 h-6 text-[var(--color-brand-sage)]" aria-hidden="true" />
               </div>
               <h3 className="font-bold text-xl mb-3">Recurring & Due Dates</h3>
               <p className="text-[var(--color-brand-graphite)] leading-relaxed text-sm">
@@ -91,7 +91,7 @@ export default async function LandingPage() {
 
             <div className="bg-[var(--color-background)] p-8 rounded-2xl border border-[var(--color-brand-graphite)] border-opacity-10 hover:border-blue-500 transition-colors">
               <div className="w-12 h-12 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
               </div>
               <h3 className="font-bold text-xl mb-3">Real-time Notifications</h3>
               <p className="text-[var(--color-brand-graphite)] leading-relaxed text-sm">
@@ -101,7 +101,7 @@ export default async function LandingPage() {
 
             <div className="bg-[var(--color-background)] p-8 rounded-2xl border border-[var(--color-brand-graphite)] border-opacity-10 hover:border-purple-500 transition-colors">
               <div className="w-12 h-12 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                <svg className="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
               </div>
               <h3 className="font-bold text-xl mb-3">Dark Mode & Timezones</h3>
               <p className="text-[var(--color-brand-graphite)] leading-relaxed text-sm">
@@ -111,7 +111,7 @@ export default async function LandingPage() {
 
             <div className="bg-[var(--color-background)] p-8 rounded-2xl border border-[var(--color-brand-graphite)] border-opacity-10 hover:border-rose-500 transition-colors">
               <div className="w-12 h-12 rounded-full bg-rose-500 bg-opacity-20 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                <svg className="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
               </div>
               <h3 className="font-bold text-xl mb-3">Secure Access</h3>
               <p className="text-[var(--color-brand-graphite)] leading-relaxed text-sm">
@@ -121,7 +121,7 @@ export default async function LandingPage() {
 
             <div className="bg-[var(--color-background)] p-8 rounded-2xl border border-[var(--color-brand-graphite)] border-opacity-10 hover:border-[#8A8F98] transition-colors">
               <div className="w-12 h-12 rounded-full bg-[#8A8F98] bg-opacity-20 flex items-center justify-center mb-6">
-                <FileText className="w-6 h-6 text-[#8A8F98]" />
+                <FileText className="w-6 h-6 text-[#8A8F98]" aria-hidden="true" />
               </div>
               <h3 className="font-bold text-xl mb-3">Daily Journaling</h3>
               <p className="text-[var(--color-brand-graphite)] leading-relaxed text-sm">

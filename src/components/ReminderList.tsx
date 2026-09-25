@@ -234,13 +234,15 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
             placeholder="What do you need to do?"
             className="w-full bg-black/5 dark:bg-white/5 rounded px-3 py-2 text-sm text-[var(--color-foreground)] border-none focus:ring-1 focus:ring-[var(--color-brand-amber)] outline-none mb-3"
           />
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <TimePicker 
-              value={time} 
-              onChange={setTime} 
-              showCurrentTimeButton={false} 
-            />
-                          <div className="w-[120px]">
+          <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-3 mb-4">
+            <div className="col-span-2 md:col-span-1">
+              <TimePicker 
+                value={time} 
+                onChange={setTime} 
+                showCurrentTimeButton={false} 
+              />
+            </div>
+              <div className="w-full md:w-[120px]">
                 <Select value={recurrence} onValueChange={setRecurrence}>
                   <SelectTrigger size="sm">
                     <SelectValue placeholder="Recurrence" />
@@ -253,7 +255,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
                   </SelectContent>
                 </Select>
               </div>
-              <div className="w-[130px]">
+              <div className="w-full md:w-[130px]">
                 <Select value={category} onValueChange={setCategory}>
                   <SelectTrigger size="sm">
                     <SelectValue placeholder="Category" />
@@ -273,7 +275,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
                   </SelectContent>
                 </Select>
               </div>
-              <div className="w-[150px]">
+              <div className="col-span-2 md:col-span-1 md:w-[150px]">
                 <Select value={notifyBeforeMinutes} onValueChange={setNotifyBeforeMinutes}>
                   <SelectTrigger size="sm">
                     <SelectValue placeholder="Alert Time" />
@@ -298,7 +300,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
             <button 
               type="button"
               onClick={() => { setIsAdding(false); setNewTaskTitle(""); }}
-              className="px-3 py-1.5 text-sm text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)]"
+              className="px-3 py-1.5 text-sm text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)] bg-transparent border border-transparent hover:bg-black/5 dark:hover:bg-white/5 rounded transition-all"
             >
               Cancel
             </button>
@@ -307,9 +309,11 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
       ) : (
         <button 
           onClick={() => setIsAdding(true)}
-          className="text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)] text-sm mt-2 transition-colors flex items-center font-medium"
+          className="w-full text-[var(--color-foreground)] bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-4 py-3 rounded-lg text-sm mt-2 transition-colors flex items-center justify-center font-medium border border-dashed border-[var(--color-brand-graphite)] border-opacity-30 group"
         >
-          + Add reminder
+          <span className="opacity-70 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+            + Add reminder <span className="hidden md:inline-block text-xs bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded ml-2 opacity-50">N</span>
+          </span>
         </button>
       )}
     </div>
