@@ -37,10 +37,7 @@ export default function ShortcutHelper() {
               <span className="text-xs text-[var(--color-brand-graphite)]">Add Reminder</span>
               <kbd className="text-[10px] bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded font-mono text-[var(--color-foreground)]">N</kbd>
             </li>
-            <li className="flex items-center justify-between px-2 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-md transition-colors">
-              <span className="text-xs text-[var(--color-brand-graphite)]">Close Modals</span>
-              <kbd className="text-[10px] bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded font-mono text-[var(--color-foreground)]">Esc</kbd>
-            </li>
+
           </ul>
         </div>
       )}
