@@ -312,7 +312,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
           className="w-full text-[var(--color-foreground)] bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-4 py-3 rounded-lg text-sm mt-2 transition-colors flex items-center justify-center font-medium border border-dashed border-[var(--color-brand-graphite)] border-opacity-30 group"
         >
           <span className="opacity-70 group-hover:opacity-100 transition-opacity flex items-center gap-2">
-            + Add reminder <span className="hidden md:inline-block text-xs bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded ml-2 opacity-50">N</span>
+            + Add reminder
           </span>
         </button>
       )}

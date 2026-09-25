@@ -6,6 +6,7 @@ import Sidebar from "./Sidebar";
 import DayView from "./DayView";
 import UserMenu from "./UserMenu";
 import GlobalSearch from "./GlobalSearch";
+import ShortcutHelper from "./ShortcutHelper";
 
 export default function ClientDashboard({ user, initialAllReminders, initialTodayReminders }: { user: any, initialAllReminders?: any[], initialTodayReminders?: any[] }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -30,6 +31,7 @@ export default function ClientDashboard({ user, initialAllReminders, initialToda
         <DayView selectedDate={selectedDate} user={user} onMenuClick={() => setSidebarOpen(true)} />
       </div>
       <GlobalSearch onSelectDate={(d) => { setSelectedDate(d); setSidebarOpen(false); }} />
+      <ShortcutHelper />
       <UserMenu user={user} />
     </div>
   );
