@@ -1,89 +1,10 @@
-"use client";
+﻿const fs = require('fs');
+let c = fs.readFileSync('src/components/Sidebar.tsx', 'utf8');
 
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState, createContext, useContext, forwardRef } from "react";
-import { getAllReminders } from "@/app/actions/reminders";
-import { CATEGORY_COLORS } from "@/lib/constants";
+const anchor = '  // Group by date for the calendar dots';
+const anchorIdx = c.indexOf(anchor);
 
-
-const RemindersContext = createContext<Record<string, any[]>>({});
-
-const CustomDayButton = forwardRef<HTMLButtonElement, any>((props, ref) => {
-  const { day, children, ...buttonProps } = props;
-  const remindersByDate = useContext(RemindersContext);
-  const dateKey = format(day.date, "yyyy-MM-dd");
-  const dayReminders = remindersByDate[dateKey] || [];
-  // Max 3 dots so it doesn't overflow
-  const uniqueCategories = Array.from(new Set(dayReminders.map((r: any) => String(r.category || "Uncategorized")))).slice(0, 3) as string[];
-
-  return (
-    <button ref={ref} {...buttonProps} className={`${buttonProps.className} relative flex flex-col items-center justify-center`}>
-      <span className="relative z-10">{children}</span>
-      {uniqueCategories.length > 0 && (
-        <div className="absolute bottom-[2px] left-0 right-0 flex justify-center space-x-0.5 pointer-events-none">
-          {uniqueCategories.map((cat: string, i) => (
-            <div 
-              key={i} 
-              className={`w-1 h-1 rounded-full ring-[1px] ring-[var(--color-background)] ${CATEGORY_COLORS[cat] || "bg-gray-400"}`} 
-            />
-          ))}
-        </div>
-      )}
-    </button>
-  );
-});
-CustomDayButton.displayName = "CustomDayButton";
-
-interface SidebarProps {
-  selectedDate: Date;
-  onSelectDate: (date: Date) => void;
-}
-
-export default function Sidebar({ selectedDate, onSelectDate, initialReminders }: SidebarProps) {
-  const [reminders, setReminders] = useState<any[]>(initialReminders || []);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Basic polling or refresh could be added, but fetch once on mount for MVP
-    getAllReminders().then(setReminders).catch(console.error);
-    
-    // Listen to custom event to refresh categories when a new reminder is added
-    const handleRefresh = () => getAllReminders().then(setReminders).catch(console.error);
-    window.addEventListener("refresh-categories", handleRefresh);
-    
-    const handleOptimistic = (e: Event) => {
-      const customEvent = e as CustomEvent;
-      const { type, reminder, id, status, dueAt } = customEvent.detail;
-      setReminders(prev => {
-        if (type === 'add') return [...prev, reminder];
-        if (type === 'delete') return prev.filter(r => r.id !== id);
-        if (type === 'update') return prev.map(r => r.id === id ? { ...r, ...reminder } : r);
-        if (type === 'status') return prev.map(r => r.id === id ? { ...r, status } : r);
-        if (type === 'bump') return prev.map(r => r.id === id ? { ...r, dueAt } : r);
-        return prev;
-      });
-    };
-    window.addEventListener("optimistic-reminder", handleOptimistic);
-
-    return () => {
-      window.removeEventListener("refresh-categories", handleRefresh);
-      window.removeEventListener("optimistic-reminder", handleOptimistic);
-    };
-  }, []);
-
-  // Group by category for the sidebar list
-  const categories = reminders.reduce((acc, rem) => {
-    const cat = rem.category || "Uncategorized";
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(rem);
-    return acc;
-  }, {} as Record<string, any[]>);
-
-
+const correctBottom = `
   // Group by date for the calendar dots
   const remindersByDate = reminders.reduce((acc, rem) => {
     const dateKey = format(new Date(rem.dueAt), "yyyy-MM-dd");
@@ -100,7 +21,7 @@ export default function Sidebar({ selectedDate, onSelectDate, initialReminders }
       </div>
       
       <div className="p-4 flex-grow overflow-y-auto">
-        <style>{`
+        <style>{\`
           .rdp-root {
             --rdp-day-height: 38px;
             --rdp-day_button-width: 38px;
@@ -121,7 +42,7 @@ export default function Sidebar({ selectedDate, onSelectDate, initialReminders }
             background-color: var(--color-foreground) !important;
             color: var(--color-brand-amber) !important;
           }
-        `}</style>
+        \`}</style>
         <RemindersContext.Provider value={remindersByDate}>
           <DayPicker
             mode="single"
@@ -145,7 +66,7 @@ export default function Sidebar({ selectedDate, onSelectDate, initialReminders }
                     className="w-full flex items-center justify-between text-sm text-[var(--color-foreground)] hover:opacity-70 transition-opacity"
                   >
                     <div className="flex items-center space-x-3">
-                      <span className={`w-3 h-3 rounded-full ${CATEGORY_COLORS[cat] || "bg-gray-400"}`}></span>
+                      <span className={\`w-3 h-3 rounded-full \${CATEGORY_COLORS[cat] || "bg-gray-400"}\`}></span>
                       <span className="font-medium">{cat}</span>
                     </div>
                     <span className="text-[var(--color-brand-graphite)] text-xs">{categoryItems.length}</span>
@@ -194,3 +115,7 @@ export default function Sidebar({ selectedDate, onSelectDate, initialReminders }
     </aside>
   );
 }
+`;
+
+c = c.substring(0, anchorIdx) + correctBottom;
+fs.writeFileSync('src/components/Sidebar.tsx', c);
