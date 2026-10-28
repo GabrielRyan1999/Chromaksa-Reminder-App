@@ -22,6 +22,15 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
   const [recurrence, setRecurrence] = useState("none");
   const [category, setCategory] = useState("none_category");
   const [notifyBeforeMinutes, setNotifyBeforeMinutes] = useState("0");
+
+  const resetForm = () => {
+    setNewTaskTitle("");
+    setTime("09:00 AM");
+    setRecurrence("none");
+    setCategory("none_category");
+    setNotifyBeforeMinutes("0");
+    setIsAdding(false);
+  };
     const dateKey = format(selectedDate, "yyyy-MM-dd");
   const isInitialLoad = !remindersCache[dateKey] && initialReminders && dateKey === format(new Date(), "yyyy-MM-dd");
   if (isInitialLoad && initialReminders) {
@@ -175,11 +184,11 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
       remindersCache[dateKey] = updated;
       return updated;
     });
-    setNewTaskTitle("");
-    setIsAdding(false);
+    const titleToSave = newTaskTitle;
+    resetForm();
 
     try {
-      const created = await createReminder(newTaskTitle, dueAt, newReminder.recurrenceRule, newReminder.category, newReminder.notifyBeforeMinutes);
+      const created = await createReminder(titleToSave, dueAt, newReminder.recurrenceRule, newReminder.category, newReminder.notifyBeforeMinutes);
       setReminders(prev => {
         const updated = prev.map(r => r.id === tempId ? { ...created, isNew: true } : r);
         remindersCache[dateKey] = updated;
@@ -299,7 +308,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
             </button>
             <button 
               type="button"
-              onClick={() => { setIsAdding(false); setNewTaskTitle(""); }}
+              onClick={resetForm}
               className="px-3 py-1.5 text-sm text-[var(--color-brand-graphite)] hover:text-[var(--color-foreground)] bg-transparent border border-transparent hover:bg-black/5 dark:hover:bg-white/5 rounded transition-all"
             >
               Cancel
@@ -308,7 +317,7 @@ export default function ReminderList({ selectedDate, initialReminders }: Reminde
         </form>
       ) : (
         <button 
-          onClick={() => setIsAdding(true)}
+          onClick={() => { resetForm(); setIsAdding(true); }}
           className="w-full text-[var(--color-foreground)] bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-4 py-3 rounded-lg text-sm mt-2 transition-colors flex items-center justify-center font-medium border border-dashed border-[var(--color-brand-graphite)] border-opacity-30 group"
         >
           <span className="opacity-70 group-hover:opacity-100 transition-opacity flex items-center gap-2">
